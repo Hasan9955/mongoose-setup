@@ -8,12 +8,40 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StudentController = void 0;
 const student_service_1 = require("./student.service");
+const zod_1 = __importDefault(require("zod"));
+// import studentValidationJoiSchema from './student.validation';
 const createStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { student: studentData } = req.body;
+        //chapter of joi
+        //validate req.body data by joi schema. 
+        // const { error, value } = studentValidationJoiSchema.validate(studentData)
+        // if (error) {
+        //     console.log(error);
+        //     res.status(500).json({
+        //         success: false, 
+        //         message: 'An error is going on joi schema!!!',
+        //         error: error.details
+        //     })
+        // } 
+        //chapter of zod
+        //create a schema validation using zod
+        const studentValidationZodSchema = zod_1.default.object({
+            id: zod_1.default.string(),
+            name: zod_1.default.object({
+                firstName: zod_1.default.string()
+                    .max(10, {
+                    message: 'firstName can not be more then 10 character'
+                }),
+                middleName: zod_1.default.string()
+            })
+        });
         //will call service func to send this data 
         const result = yield student_service_1.StudentServices.createStudentIntoDB(studentData);
         //send response
@@ -25,10 +53,10 @@ const createStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
     catch (error) {
         console.log(error);
-        res.status(404).json({
+        res.status(500).json({
             success: false,
             message: 'An error is going on!!!',
-            data: error
+            error
         });
     }
 });

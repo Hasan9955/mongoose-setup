@@ -1,18 +1,35 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StudentModel = void 0;
 const mongoose_1 = require("mongoose");
+const validator_1 = __importDefault(require("validator"));
 const userNameSchema = new mongoose_1.Schema({
     firstName: {
         type: String,
-        required: [true, 'First name is required']
+        // trim property will remove the string spaces
+        trim: true,
+        required: [true, 'First name is required'],
+        validate: {
+            validator: function (value) {
+                const firstCarCapital = value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+                return value === firstCarCapital;
+            },
+            message: '{VALUE} is not capitalize!'
+        }
     },
     middleName: {
         type: String
     },
     lastName: {
         type: String,
-        required: [true, 'Last name is required']
+        required: [true, 'Last name is required'],
+        validate: {
+            validator: (value) => validator_1.default.isAlpha(value),
+            message: "{VALUE} is not valid value."
+        }
     }
 });
 const guardianSchema = new mongoose_1.Schema({
@@ -30,11 +47,7 @@ const localGuardianSchema = new mongoose_1.Schema({
     address: String,
 });
 const StudentSchema = new mongoose_1.Schema({
-    id: {
-        type: String,
-        required: true,
-        unique: true
-    },
+    id: { type: String, unique: true, required: true },
     name: {
         type: userNameSchema,
         required: true
@@ -47,10 +60,26 @@ const StudentSchema = new mongoose_1.Schema({
         },
         required: [true, 'Gender is required']
     },
-    email: { type: String },
+    email: {
+        type: String,
+        validate: {
+            validator: (value) => validator_1.default.isEmail(value),
+            message: "{VALUE} is not valid email."
+        }
+    },
     dateOfBirth: { type: String },
-    contactNumber: { type: String, required: true },
-    emergencyContactNo: { type: String, required: true },
+    contactNumber: {
+        type: String,
+        minlength: [11, 'The length of ContactNO should be 11'],
+        maxlength: [11, 'The length of ContactNO should be 11'],
+        required: [true, 'ContactNO is required!']
+    },
+    emergencyContactNo: {
+        type: String,
+        minlength: [11, 'The length of ContactNO should be 11'],
+        maxlength: [11, 'The length of ContactNO should be 11'],
+        required: [true, 'ContactNO is required!']
+    },
     bloodGroup: { type: String },
     presentAddress: { type: String },
     permanentAddress: { type: String },

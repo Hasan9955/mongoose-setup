@@ -25,6 +25,11 @@ const createStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
     catch (error) {
         console.log(error);
+        res.status(404).json({
+            success: false,
+            message: 'An error is going on!!!',
+            data: error
+        });
     }
 });
 const getAllStudents = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

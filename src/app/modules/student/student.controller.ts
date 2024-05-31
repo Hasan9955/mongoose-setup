@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { StudentServices } from './student.service';
 import z from 'zod';
+import studentValidationZodSchema from './student.zod.validation';
 // import studentValidationJoiSchema from './student.validation';
 
 
@@ -27,28 +28,14 @@ const createStudent = async (req: Request, res: Response) => {
 
 
         //chapter of zod
-        //create a schema validation using zod
-        const studentValidationZodSchema = z.object({
-            id: z.string(),
-            name: z.object({
-                firstName: z.string()
-                .max(10,
-                    {
-                        message: 'firstName can not be more then 10 character'
-                    },
-                ),
-                middleName: z.string()
-            })
-        })
+        //Data validation using zod
 
+        const zodparseData = studentValidationZodSchema.parse(studentData)
 
-
-
-
-
+        
         //will call service func to send this data 
 
-        const result = await StudentServices.createStudentIntoDB(studentData)
+        const result = await StudentServices.createStudentIntoDB(zodparseData)
 
         //send response
 

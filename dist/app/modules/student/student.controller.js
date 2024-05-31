@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StudentController = void 0;
 const student_service_1 = require("./student.service");
-const zod_1 = __importDefault(require("zod"));
+const student_zod_validation_1 = __importDefault(require("./student.zod.validation"));
 // import studentValidationJoiSchema from './student.validation';
 const createStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -31,19 +31,10 @@ const createStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         //     })
         // } 
         //chapter of zod
-        //create a schema validation using zod
-        const studentValidationZodSchema = zod_1.default.object({
-            id: zod_1.default.string(),
-            name: zod_1.default.object({
-                firstName: zod_1.default.string()
-                    .max(10, {
-                    message: 'firstName can not be more then 10 character'
-                }),
-                middleName: zod_1.default.string()
-            })
-        });
+        //Data validation using zod
+        const zodparseData = student_zod_validation_1.default.parse(studentData);
         //will call service func to send this data 
-        const result = yield student_service_1.StudentServices.createStudentIntoDB(studentData);
+        const result = yield student_service_1.StudentServices.createStudentIntoDB(zodparseData);
         //send response
         res.status(200).json({
             success: true,

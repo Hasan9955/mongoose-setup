@@ -53,7 +53,6 @@ const createStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 const getAllStudents = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const result = yield student_service_1.StudentServices.getAllStudent();
-        console.log(result);
         res.status(200).json({
             success: true,
             message: 'Students is retrieved successfully',
@@ -104,9 +103,29 @@ const deleteAStudent = (req, res) => __awaiter(void 0, void 0, void 0, function*
         });
     }
 });
+const updateAStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const data = req.body;
+        const studentId = req.params.id;
+        const result = yield student_service_1.StudentServices.updateStudent(studentId, data);
+        res.status(200).json({
+            success: true,
+            message: 'Student is updated successfully',
+            data: result
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message || 'An error is going on controller!!!',
+            error
+        });
+    }
+});
 exports.StudentController = {
     createStudent,
     getAllStudents,
     findAStudent,
-    deleteAStudent
+    deleteAStudent,
+    updateAStudent
 };

@@ -121,6 +121,14 @@ const StudentSchema = new mongoose_1.Schema({
         type: Boolean,
         default: false
     }
+}, {
+    toJSON: {
+        virtuals: true
+    }
+});
+//Mongoose virtual method       
+StudentSchema.virtual('fullName').get(function () {
+    return `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`;
 });
 //creating a custom static method
 StudentSchema.statics.isStudentExists = function (id) {
@@ -149,10 +157,22 @@ StudentSchema.post('save', function (doc, next) {
 });
 //Query middleware example
 //pre save query middleware
-// StudentSchema.pre('find', function (next){ 
-//     console.log(this);
-//     next();
-// })
+StudentSchema.pre('find', function (next) {
+    this.find({ isDeleted: { $ne: true } });
+    next();
+});
+StudentSchema.pre('findOne', function (next) {
+    this.find({ isDeleted: { $ne: true } });
+    next();
+});
+//when we will use aggregate this middleware will work
+StudentSchema.pre('aggregate', function (next) {
+    // console.log(this.pipeline()); 
+    //Output: [ { '$match': { id: '10' } } ] 
+    this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
+    //Output: [{$match: {isDeleted: {$ne: true}}}, { '$match': { id: '10' } } ]
+    next();
+});
 //creating a custom instance method
 // StudentSchema.methods.isUserExists = async function (id: string) {
 //     const existingStudent = StudentModel.findOne({ id })

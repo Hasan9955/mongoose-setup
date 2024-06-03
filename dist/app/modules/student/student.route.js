@@ -10,6 +10,7 @@ const router = express_1.default.Router();
 // will call controller func
 router.get('/', student_controller_1.StudentController.getAllStudents);
 router.post('/create-student', student_controller_1.StudentController.createStudent);
+router.put('/update/:id', student_controller_1.StudentController.updateAStudent);
 router.get('/:id', student_controller_1.StudentController.findAStudent);
 router.delete('/delete/:id', student_controller_1.StudentController.deleteAStudent);
 exports.StudentRoutes = router;

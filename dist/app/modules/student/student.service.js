@@ -11,20 +11,38 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StudentServices = void 0;
 const student_model_1 = require("./student.model");
-const createStudentIntoDB = (student) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield student_model_1.StudentModel.create(student);
+const createStudentIntoDB = (studentData) => __awaiter(void 0, void 0, void 0, function* () {
+    // This is example of Mongoose built in static method.
+    if (yield student_model_1.StudentModel.isStudentExists(studentData.id)) {
+        throw new Error("User already exists.");
+    }
+    const result = yield student_model_1.StudentModel.create(studentData);
+    //This is example of Mongoose built in instance method.
+    // const studentInstance = new StudentModel(student)
+    // if(await studentInstance.isUserExists(student.id)){
+    //     throw new Error('User already exists!')
+    // }
+    // const result = await studentInstance.save();
     return result;
 });
 const getAllStudent = () => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield student_model_1.StudentModel.find();
+    console.log(result);
     return result;
 });
 const findAStudent = (reqId) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield student_model_1.StudentModel.findOne({ id: reqId });
     return result;
 });
+const deleteStudent = (reqId) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield student_model_1.StudentModel.updateOne({ id: reqId }, {
+        isDeleted: true
+    });
+    return result;
+});
 exports.StudentServices = {
     createStudentIntoDB,
     getAllStudent,
-    findAStudent
+    findAStudent,
+    deleteStudent
 };

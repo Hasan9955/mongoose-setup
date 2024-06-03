@@ -1,4 +1,13 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -6,6 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.StudentModel = void 0;
 const mongoose_1 = require("mongoose");
 const validator_1 = __importDefault(require("validator"));
+const bcrypt_1 = __importDefault(require("bcrypt"));
+const config_1 = __importDefault(require("../../config"));
 const userNameSchema = new mongoose_1.Schema({
     firstName: {
         type: String,
@@ -47,10 +58,19 @@ const localGuardianSchema = new mongoose_1.Schema({
     address: String,
 });
 const StudentSchema = new mongoose_1.Schema({
-    id: { type: String, unique: true, required: true },
+    id: {
+        type: String,
+        unique: true,
+        required: true
+    },
     name: {
         type: userNameSchema,
         required: true
+    },
+    password: {
+        type: String,
+        required: true,
+        minLength: [6, 'password should be at last 6 character']
     },
     gender: {
         type: String,
@@ -96,6 +116,46 @@ const StudentSchema = new mongoose_1.Schema({
         enum: ['active', 'blocked'],
         default: 'active',
     },
-    profilePic: String
+    profilePic: String,
+    isDeleted: {
+        type: Boolean,
+        default: false
+    }
 });
+//creating a custom static method
+StudentSchema.statics.isStudentExists = function (id) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const existingStudent = yield exports.StudentModel.findOne({ id });
+        return existingStudent;
+    });
+};
+/*                        MONGOOSE BUILTIN MIDDLEWARE                                */
+//Document middleware example
+//pre save middleware
+StudentSchema.pre('save', function (next) {
+    return __awaiter(this, void 0, void 0, function* () {
+        // console.log(this, 'pre hook we will save the data');
+        const user = this; //this raper the currently processing document.  
+        //hashing password and save into db
+        user.password = yield bcrypt_1.default.hash(user.password, Number(config_1.default.bcrypt_salt));
+        next();
+    });
+});
+//post save middleware
+StudentSchema.post('save', function (doc, next) {
+    // console.log(this, 'Post hook we saved our data');
+    doc.password = ''; // we have empty string the password
+    next();
+});
+//Query middleware example
+//pre save query middleware
+// StudentSchema.pre('find', function (next){ 
+//     console.log(this);
+//     next();
+// })
+//creating a custom instance method
+// StudentSchema.methods.isUserExists = async function (id: string) {
+//     const existingStudent = StudentModel.findOne({ id })
+//     return existingStudent;
+// }
 exports.StudentModel = (0, mongoose_1.model)('Student', StudentSchema);

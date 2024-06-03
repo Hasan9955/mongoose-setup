@@ -1,13 +1,16 @@
 
 
-export type UserName = {
+import { Model } from "mongoose";
+
+
+export type TUserName = {
     firstName: string;
     middleName?: string;
     lastName: string;
 
 }
 
-export type Guardian = {
+export type TGuardian = {
     fatherName: string;
     fatherOccupation: string;
     fatherContactNo: string;
@@ -16,15 +19,16 @@ export type Guardian = {
     motherContactNo: string;
 }
 
-export type LocalGuardian = {
+export type TLocalGuardian = {
     name: string;
     occupation: string;
     contactNo: string;
     address: string;
 }
-export interface Student {
+export interface TStudent {
     id: string;
-    name: UserName;
+    password: string;
+    name: TUserName;
     gender: "male" | "female" | "other";
     dateOfBirth?: string;
     contactNumber: string;
@@ -34,7 +38,31 @@ export interface Student {
     profilePic?: string
     presentAddress: string;
     permanentAddress: string;
-    guardian: Guardian;
-    localGuardian: LocalGuardian;
-    studentStatus: "active" | "blocked"
+    guardian: TGuardian;
+    localGuardian: TLocalGuardian;
+    studentStatus: "active" | "blocked",
+    isDeleted: boolean
+};
+
+
+
+
+// this is the example of mongoose static methods
+export interface TStudentModel extends Model<TStudent> {
+    isStudentExists (id: string): Promise<TStudent | null>
 }
+
+
+
+
+
+//This is the example of mongoose instance methods
+// export type TStudentMethods = {
+//     isUserExists(id: string): Promise<TStudent | null>
+// }
+
+
+// export type TStudentModel = Model<
+//     TStudent,
+//     Record<string, never>,
+//     TStudentMethods>

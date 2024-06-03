@@ -38,6 +38,7 @@ const localGuardianValidationZodSchema = zod_1.z.object({
 // Student Schema
 const studentValidationZodSchema = zod_1.z.object({
     id: zod_1.z.string().min(1, 'ID is required'),
+    password: zod_1.z.string().min(6, "password should be minimum 6 character. zod!!"),
     name: userNameValidationZodSchema,
     gender: zod_1.z.enum(['male', 'female', 'other'], {
         errorMap: (issue, _ctx) => {
@@ -64,6 +65,7 @@ const studentValidationZodSchema = zod_1.z.object({
     localGuardian: localGuardianValidationZodSchema,
     studentStatus: zod_1.z.enum(['active', 'blocked']).default('active'),
     profilePic: zod_1.z.string(),
+    isDeleted: zod_1.z.boolean().default(false)
 });
 // type Student = z.infer<typeof studentValidationZodSchema>
 exports.default = studentValidationZodSchema;

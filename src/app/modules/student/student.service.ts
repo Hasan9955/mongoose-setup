@@ -4,27 +4,7 @@ import { StudentModel } from './student.model';
 import { merge } from 'lodash'
 
 
-const createStudentIntoDB = async (studentData: TStudent) => {
 
-    // This is example of Mongoose built in static method.
-    if (await StudentModel.isStudentExists(studentData.id)) {
-        throw new Error("User already exists.")
-    }
-
-    const result = await StudentModel.create(studentData);
-
-
-    //This is example of Mongoose built in instance method.
-    // const studentInstance = new StudentModel(student)
-    // if(await studentInstance.isUserExists(student.id)){
-    //     throw new Error('User already exists!')
-    // }
-    // const result = await studentInstance.save();
-
-
-
-    return result;
-}
 
 const getAllStudent = async () => {
     const result = await StudentModel.find()
@@ -99,8 +79,7 @@ const updateStudent = async (id: string, data: Object) => {
 }
 
 
-export const StudentServices = {
-    createStudentIntoDB,
+export const StudentServices = { 
     getAllStudent,
     findAStudent,
     deleteStudent,

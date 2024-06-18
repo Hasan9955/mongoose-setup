@@ -1,8 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { TStudent, TUserName, TGuardian, TLocalGuardian, TStudentModel } from './student.interface';
 import validator from 'validator'
-import bcrypt from 'bcrypt'
-import config from '../../config';
 const userNameSchema = new Schema<TUserName>({
     firstName: {
         type: String,
@@ -56,14 +54,15 @@ const StudentSchema = new Schema<TStudent, TStudentModel>({
         unique: true,
         required: true
     },
+    user:{
+        type: Schema.Types.ObjectId,
+        required: [true, 'user id is required'],
+        unique: true,
+        ref: 'User'
+    },
     name: {
         type: userNameSchema,
         required: true
-    },
-    password: {
-        type: String,
-        required: true,
-        minLength: [6, 'password should be at last 6 character']
     },
     gender: {
         type: String,
@@ -104,12 +103,7 @@ const StudentSchema = new Schema<TStudent, TStudentModel>({
     localGuardian: {
         type: localGuardianSchema,
         required: true
-    },
-    studentStatus: {
-        type: String,
-        enum: ['active', 'blocked'],
-        default: 'active',
-    },
+    }, 
     profilePic: String,
     isDeleted: {
         type: Boolean,
@@ -142,29 +136,6 @@ StudentSchema.statics.isStudentExists = async function (id: string) {
 
 /*                        MONGOOSE BUILTIN MIDDLEWARE                                */
 //Document middleware example
-//pre save middleware
-StudentSchema.pre('save', async function (next) {
-    // console.log(this, 'pre hook we will save the data');
-
-    const user = this; //this raper the currently processing document.  
-    //hashing password and save into db
-    user.password = await bcrypt.hash(
-        user.password,
-        Number(config.bcrypt_salt),
-    )
-    next();
-});
-
-
-//post save middleware
-StudentSchema.post('save', function (doc, next) {
-    // console.log(this, 'Post hook we saved our data');
-
-    doc.password = ''// we have empty string the password
-    next();
-});
-
-
 
 
 

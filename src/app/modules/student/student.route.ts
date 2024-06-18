@@ -6,9 +6,8 @@ const router = express.Router();
 
 // will call controller func
 
-router.get('/', StudentController.getAllStudents)
+router.get('/', StudentController.getAllStudents) 
 
-router.post('/create-student', StudentController.createStudent)
 router.put('/update/:id', StudentController.updateAStudent)
 
 router.get('/:id', StudentController.findAStudent)

@@ -15,8 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.StudentModel = void 0;
 const mongoose_1 = require("mongoose");
 const validator_1 = __importDefault(require("validator"));
-const bcrypt_1 = __importDefault(require("bcrypt"));
-const config_1 = __importDefault(require("../../config"));
 const userNameSchema = new mongoose_1.Schema({
     firstName: {
         type: String,
@@ -63,14 +61,15 @@ const StudentSchema = new mongoose_1.Schema({
         unique: true,
         required: true
     },
+    user: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        required: [true, 'user id is required'],
+        unique: true,
+        ref: 'User'
+    },
     name: {
         type: userNameSchema,
         required: true
-    },
-    password: {
-        type: String,
-        required: true,
-        minLength: [6, 'password should be at last 6 character']
     },
     gender: {
         type: String,
@@ -111,11 +110,6 @@ const StudentSchema = new mongoose_1.Schema({
         type: localGuardianSchema,
         required: true
     },
-    studentStatus: {
-        type: String,
-        enum: ['active', 'blocked'],
-        default: 'active',
-    },
     profilePic: String,
     isDeleted: {
         type: Boolean,
@@ -139,22 +133,6 @@ StudentSchema.statics.isStudentExists = function (id) {
 };
 /*                        MONGOOSE BUILTIN MIDDLEWARE                                */
 //Document middleware example
-//pre save middleware
-StudentSchema.pre('save', function (next) {
-    return __awaiter(this, void 0, void 0, function* () {
-        // console.log(this, 'pre hook we will save the data');
-        const user = this; //this raper the currently processing document.  
-        //hashing password and save into db
-        user.password = yield bcrypt_1.default.hash(user.password, Number(config_1.default.bcrypt_salt));
-        next();
-    });
-});
-//post save middleware
-StudentSchema.post('save', function (doc, next) {
-    // console.log(this, 'Post hook we saved our data');
-    doc.password = ''; // we have empty string the password
-    next();
-});
 //Query middleware example
 //pre save query middleware
 StudentSchema.pre('find', function (next) {

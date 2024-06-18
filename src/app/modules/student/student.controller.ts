@@ -1,63 +1,13 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { StudentServices } from './student.service';
 import z from 'zod';
 import studentValidationZodSchema from './student.zod.validation';
 // import studentValidationJoiSchema from './student.validation';
 
 
-const createStudent = async (req: Request, res: Response) => {
-
-    try {
-
-        const { student: studentData } = req.body;
 
 
-        //chapter of joi
-        //validate req.body data by joi schema. 
-        // const { error, value } = studentValidationJoiSchema.validate(studentData)
-        // if (error) {
-        //     console.log(error);
-        //     res.status(500).json({
-        //         success: false, 
-        //         message: 'An error is going on joi schema!!!',
-        //         error: error.details
-        //     })
-        // } 
-
-
-
-
-        //chapter of zod
-        //Data validation using zod
-
-
-        const zodparseData = studentValidationZodSchema.parse(studentData)
-
-
-        //will call service func to send this data 
-
-        const result = await StudentServices.createStudentIntoDB(zodparseData)
-
-        //send response
-
-        res.status(200).json({
-            success: true,
-            message: 'Student is created successfully',
-            data: result
-
-        })
-    } catch (error: any) {
-        res.status(500).json({
-            success: false,
-            message: error.message || 'An error is going on!!!',
-            error
-
-        })
-
-    }
-}
-
-const getAllStudents = async (req: Request, res: Response) => {
+const getAllStudents = async (req: Request, res: Response, next: NextFunction) => {
     try {
 
         const result = await StudentServices.getAllStudent();
@@ -68,18 +18,13 @@ const getAllStudents = async (req: Request, res: Response) => {
             data: { result }
 
         })
-    } catch (error: any) {
-        res.status(500).json({
-            success: false,
-            message: 'An error is going on!!!',
-            error
-
-        })
-    }
+    } catch (error) {
+        next(error)
+     }
 }
 
 
-const findAStudent = async (req: Request, res: Response) => {
+const findAStudent = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const id = req.params.id;
 
@@ -91,18 +36,13 @@ const findAStudent = async (req: Request, res: Response) => {
             data: result
 
         })
-    } catch (error: any) {
-        res.status(500).json({
-            success: false,
-            message: 'An error is going on!!!',
-            error
-
-        })
-    }
+    } catch (error) {
+        next(error)
+     }
 }
 
 
-const deleteAStudent = async (req: Request, res: Response) => {
+const deleteAStudent = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const id = req.params.id;
         const result = await StudentServices.deleteStudent(id);
@@ -113,19 +53,15 @@ const deleteAStudent = async (req: Request, res: Response) => {
             data: result
 
         })
-    } catch (error: any) {
-        res.status(500).json({
-            success: false,
-            message: 'An error is going on!!!',
-            error
-        })
-    }
+    } catch (error) {
+        next(error)
+     }
 
 
 }
 
 
-const updateAStudent = async (req: Request, res: Response) => {
+const updateAStudent = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = req.body;
         const studentId = req.params.id;
@@ -137,18 +73,13 @@ const updateAStudent = async (req: Request, res: Response) => {
             data: result
 
         })
-    } catch (error: any) {
-        res.status(500).json({
-            success: false,
-            message: error.message || 'An error is going on controller!!!',
-            error
-        })
+    } catch (error) {
+       next(error)
     }
 
 }
 
-export const StudentController = {
-    createStudent,
+export const StudentController = { 
     getAllStudents,
     findAStudent,
     deleteAStudent,

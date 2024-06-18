@@ -12,20 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.StudentServices = void 0;
 const student_model_1 = require("./student.model");
 const lodash_1 = require("lodash");
-const createStudentIntoDB = (studentData) => __awaiter(void 0, void 0, void 0, function* () {
-    // This is example of Mongoose built in static method.
-    if (yield student_model_1.StudentModel.isStudentExists(studentData.id)) {
-        throw new Error("User already exists.");
-    }
-    const result = yield student_model_1.StudentModel.create(studentData);
-    //This is example of Mongoose built in instance method.
-    // const studentInstance = new StudentModel(student)
-    // if(await studentInstance.isUserExists(student.id)){
-    //     throw new Error('User already exists!')
-    // }
-    // const result = await studentInstance.save();
-    return result;
-});
 const getAllStudent = () => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield student_model_1.StudentModel.find();
     return result;
@@ -83,7 +69,6 @@ const updateStudent = (id, data) => __awaiter(void 0, void 0, void 0, function* 
     return result;
 });
 exports.StudentServices = {
-    createStudentIntoDB,
     getAllStudent,
     findAStudent,
     deleteStudent,

@@ -45,37 +45,38 @@ const localGuardianValidationZodSchema = z.object({
 
 // Student Schema
 const studentValidationZodSchema = z.object({
-  id: z.string().min(1, 'ID is required'),
-  password: z.string().min(6, "password should be minimum 6 character. zod!!"),
-  name: userNameValidationZodSchema,
-  gender: z.enum(['male', 'female', 'other'], {
-    errorMap: (issue, _ctx) => {
-      if (issue.code === 'invalid_enum_value') {
-        return { message: "{VALUE} is not supported. The gender field can be one of the following: 'male', 'female' or 'other'" };
-      }
-      return { message: 'Gender is required' };
-    },
-  }),
-  email: z.string().email('{VALUE} is not valid email'),
-  dateOfBirth: z.string(),
-  contactNumber: z.string()
-    .min(11, 'The length of ContactNO should be 11')
-    .max(11, 'The length of ContactNO should be 11')
-    .refine((value) => /^[0-9]+$/.test(value), 'ContactNO should only contain numbers'),
-  emergencyContactNo: z.string()
-    .min(11, 'The length of ContactNO should be 11')
-    .max(11, 'The length of ContactNO should be 11')
-    .refine((value) => /^[0-9]+$/.test(value), 'ContactNO should only contain numbers'), 
-  bloodGroup: z.string(),
-  presentAddress: z.string(),
-  permanentAddress: z.string(),
-  guardian: guardianValidationZodSchema,
-  localGuardian: localGuardianValidationZodSchema,
-  studentStatus: z.enum(['active', 'blocked']).default('active'),
-  profilePic: z.string(),
-  isDeleted: z.boolean().default(false)
-});
-
+  password: z.string().min(6, 'password should be at last 6 character').optional(),
+  student: z.object({ 
+    name: userNameValidationZodSchema,
+    gender: z.enum(['male', 'female', 'other'], {
+      errorMap: (issue, _ctx) => {
+        if (issue.code === 'invalid_enum_value') {
+          return { message: "{VALUE} is not supported. The gender field can be one of the following: 'male', 'female' or 'other'" };
+        }
+        return { message: 'Gender is required' };
+      },
+    }),
+    email: z.string().email('{VALUE} is not valid email'),
+    dateOfBirth: z.string(),
+    contactNumber: z.string()
+      .min(11, 'The length of ContactNO should be 11')
+      .max(11, 'The length of ContactNO should be 11')
+      .refine((value) => /^[0-9]+$/.test(value), 'ContactNO should only contain numbers'),
+    emergencyContactNo: z.string()
+      .min(11, 'The length of ContactNO should be 11')
+      .max(11, 'The length of ContactNO should be 11')
+      .refine((value) => /^[0-9]+$/.test(value), 'ContactNO should only contain numbers'), 
+    bloodGroup: z.string(),
+    presentAddress: z.string(),
+    permanentAddress: z.string(),
+    guardian: guardianValidationZodSchema,
+    localGuardian: localGuardianValidationZodSchema,
+    studentStatus: z.enum(['active', 'blocked']).default('active'),
+    profilePic: z.string(),
+    admissionSemester: z.string(),
+    isDeleted: z.boolean().default(false)
+  })
+})
 // type Student = z.infer<typeof studentValidationZodSchema>
 
 

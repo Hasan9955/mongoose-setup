@@ -27,6 +27,8 @@ const userNameSchema = new Schema<TUserName>({
         }
     }
 
+},{
+    _id: false
 })
 
 
@@ -37,6 +39,8 @@ const guardianSchema = new Schema<TGuardian>({
     motherName: String,
     motherOccupation: String,
     motherContactNo: String,
+}, {
+    _id: false
 })
 
 const localGuardianSchema = new Schema<TLocalGuardian>({
@@ -44,6 +48,8 @@ const localGuardianSchema = new Schema<TLocalGuardian>({
     occupation: String,
     contactNo: String,
     address: String,
+}, {
+    _id: false
 })
 
 
@@ -104,6 +110,10 @@ const StudentSchema = new Schema<TStudent, TStudentModel>({
         type: localGuardianSchema,
         required: true
     }, 
+    admissionSemester: {
+        type: Schema.Types.ObjectId,
+        ref: 'AcademicSemester'
+    },
     profilePic: String,
     isDeleted: {
         type: Boolean,

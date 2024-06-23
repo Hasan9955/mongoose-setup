@@ -6,8 +6,7 @@ import catchAsync from '../../utility/catchAsync';
 
 
 const createStudent: RequestHandler = catchAsync(async (req, res) => { 
-    const { password, student: studentData } = req.body;
-
+    const { password, student: studentData } = req.body; 
 
     //chapter of joi
     //validate req.body data by joi schema. 

@@ -1,4 +1,5 @@
 // import deepMerge from '../../utility/deepMerge';
+import AppError from '../../Errors/AppError';
 import { TStudent } from './student.interface';
 import { StudentModel } from './student.model';
 import { merge } from 'lodash'
@@ -8,6 +9,14 @@ import { merge } from 'lodash'
 
 const getAllStudent = async () => {
     const result = await StudentModel.find()
+    .populate('user')
+    .populate('academicSemester')
+    .populate({
+        path: 'academicDepartment',
+        populate: {
+            path: 'academicFaculty'
+        }
+    })
     return result;
 }
 
@@ -16,9 +25,15 @@ const findAStudent = async (reqId: string) => {
     // const result = await StudentModel.findOne({ id: reqId })
 
     //get result by using aggritation.
-    const result = await StudentModel.aggregate([
-        { $match: { id: reqId } }
-    ])
+    const result = await StudentModel.findById(reqId)
+    .populate('user')
+    .populate('academicSemester')
+    .populate({
+        path: 'academicDepartment',
+        populate: {
+            path: 'academicFaculty'
+        }
+    })
 
     return result;
 }
@@ -36,7 +51,7 @@ const updateStudent = async (id: string, data: Object) => {
     const student = await StudentModel.findOne({ id: id })
 
     if (!student) {
-        throw new Error('Student is not exists!')
+        throw new AppError(404, 'Student is not exists!')
     }
 
 

@@ -33,7 +33,7 @@ const deleteStudent = (reqId) => __awaiter(void 0, void 0, void 0, function* () 
 const updateStudent = (id, data) => __awaiter(void 0, void 0, void 0, function* () {
     const student = yield student_model_1.StudentModel.findOne({ id: id });
     if (!student) {
-        throw new Error('Student is not exists!');
+        throw new (404, 'Student is not exists!');
     }
     //Method: 1
     //update student by lodash

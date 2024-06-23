@@ -3,8 +3,7 @@ import { UserModel } from "./user.model";
 
 
 
-const findLastStudentId = async (data: TAcademicSemester) =>{
-   const {name, code, year} = data;
+const findLastStudentId = async () =>{ 
    const studentId = await UserModel.findOne({
       
    }, {
@@ -21,7 +20,7 @@ const findLastStudentId = async (data: TAcademicSemester) =>{
  //Generate id
  export const generateStudentId = async (payload: TAcademicSemester) => { 
 
-    const currentId = await findLastStudentId(payload) || (0).toString(); 
+    const currentId = await findLastStudentId() || (0).toString(); 
 
     let incrementId = (Number(currentId) + 1).toString().padStart(4, "0");
 

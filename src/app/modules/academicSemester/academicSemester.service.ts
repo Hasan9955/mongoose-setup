@@ -2,6 +2,8 @@ import { merge } from 'lodash';
 import catchAsync from '../../utility/catchAsync';
 import { TAcademicSemester } from './academicSemester.interface';
 import { AcademicSemesterModel } from './academicSemester.model';
+import AppError from '../../Errors/AppError';
+import httpStatus from 'http-status';
 
 
 const createAcademicSemester = async(payload: TAcademicSemester) =>{
@@ -15,7 +17,7 @@ const createAcademicSemester = async(payload: TAcademicSemester) =>{
     }
 
     if(academicSemesterCodeMapper[payload.name] !== payload.code){
-        throw new Error ('Semester code invalid.')
+        throw new AppError (httpStatus.BAD_REQUEST, 'Semester code invalid.')
     }
 
     const result = await AcademicSemesterModel.create(payload);

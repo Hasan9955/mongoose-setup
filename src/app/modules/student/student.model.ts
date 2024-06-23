@@ -27,7 +27,7 @@ const userNameSchema = new Schema<TUserName>({
         }
     }
 
-},{
+}, {
     _id: false
 })
 
@@ -60,11 +60,11 @@ const StudentSchema = new Schema<TStudent, TStudentModel>({
         unique: true,
         required: true
     },
-    user:{
+    user: {
         type: Schema.Types.ObjectId,
         required: [true, 'user id is required'],
         unique: true,
-        ref: 'User'
+        ref: 'user'
     },
     name: {
         type: userNameSchema,
@@ -110,10 +110,14 @@ const StudentSchema = new Schema<TStudent, TStudentModel>({
     localGuardian: {
         type: localGuardianSchema,
         required: true
-    }, 
-    admissionSemester: {
+    },
+    academicSemester: {
         type: Schema.Types.ObjectId,
         ref: 'AcademicSemester'
+    },
+    academicDepartment: {
+        type: Schema.Types.ObjectId,
+        ref: 'AcademicDepartment'
     },
     profilePic: String,
     isDeleted: {
@@ -166,8 +170,8 @@ StudentSchema.pre('findOne', function (next) {
 
 
 //when we will use aggregate this middleware will work
-StudentSchema.pre('aggregate', function (next) { 
-    
+StudentSchema.pre('aggregate', function (next) {
+
     // console.log(this.pipeline()); 
     //Output: [ { '$match': { id: '10' } } ] 
 

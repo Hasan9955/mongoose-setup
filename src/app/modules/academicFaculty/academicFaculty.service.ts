@@ -1,6 +1,7 @@
 import { merge } from 'lodash';
 import { AcademicFacultyModel } from './academicFaculty.model';
 import { TAcademicFaculty } from './academicFaculty.interface';
+import AppError from '../../Errors/AppError';
 
 const createAcademicFaculty = async(payload: TAcademicFaculty) =>{
     const result = await AcademicFacultyModel.create(payload);
@@ -19,15 +20,15 @@ const getSingleAcademicFaculty = async (id: string) =>{
 }
 
 const updateAcademicFaculty = async (id: string, payload: TAcademicFaculty) =>{
-    const facultyData = await AcademicFacultyModel.findById({id});
-
+    const facultyData = await AcademicFacultyModel.findById(id);
+    
     if(!facultyData){
-        throw new Error ('Faculty Data is not found.')
+        throw new AppError (404, 'This Faculty Data is not found.')
     }
 
     const mergedData = merge(facultyData, payload)
 
-    const result = await AcademicFacultyModel.findByIdAndUpdate({id}, mergedData, {
+    const result = await AcademicFacultyModel.findByIdAndUpdate(id, mergedData, {
         runValidators: true,
         new: true
     });

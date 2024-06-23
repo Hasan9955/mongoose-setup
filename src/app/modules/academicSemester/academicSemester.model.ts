@@ -65,4 +65,4 @@ AcademicSemesterSchema.pre('findOneAndUpdate', async function(next) {
 
 
 
-export const AcademicSemesterModel = model<TAcademicSemester>('academicSemester', AcademicSemesterSchema)
+export const AcademicSemesterModel = model<TAcademicSemester>('AcademicSemester', AcademicSemesterSchema)

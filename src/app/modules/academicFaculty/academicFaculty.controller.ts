@@ -34,6 +34,7 @@ const getSingleAcademicFaculty = catchAsync(async(req, res) =>{
 const updateAcademicFaculty = catchAsync(async(req, res) =>{
     const id = req.params.id;
     const data = req.body;
+    
     const result = await AcademicFacultyServices.updateAcademicFaculty(id, data);
     res.status(200).json({
         success: true,

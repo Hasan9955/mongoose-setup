@@ -40,8 +40,9 @@ export interface TStudent {
     presentAddress: string;
     permanentAddress: string;
     guardian: TGuardian;
-    localGuardian: TLocalGuardian; 
-    admissionSemester: Types.ObjectId;
+    localGuardian: TLocalGuardian;
+    academicSemester: Types.ObjectId;
+    academicDepartment: Types.ObjectId;
     isDeleted: boolean
 };
 
@@ -50,7 +51,7 @@ export interface TStudent {
 
 // this is the example of mongoose static methods
 export interface TStudentModel extends Model<TStudent> {
-    isStudentExists (id: string): Promise<TStudent | null>
+    isStudentExists(id: string): Promise<TStudent | null>
 }
 
 

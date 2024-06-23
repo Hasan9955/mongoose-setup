@@ -73,7 +73,8 @@ const studentValidationZodSchema = z.object({
     localGuardian: localGuardianValidationZodSchema,
     studentStatus: z.enum(['active', 'blocked']).default('active'),
     profilePic: z.string(),
-    admissionSemester: z.string(),
+    academicSemester: z.string(),
+    academicDepartment: z.string(),
     isDeleted: z.boolean().default(false)
   })
 })

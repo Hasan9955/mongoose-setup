@@ -8,11 +8,11 @@ const router = express.Router();
 
 router.get('/', StudentController.getAllStudents) 
 
-router.put('/update/:id', StudentController.updateAStudent)
+router.patch('/update/:id', StudentController.updateAStudent)
 
-router.get('/:id', StudentController.findAStudent)
+router.get('/:studentId', StudentController.findAStudent)
 
-router.delete('/delete/:id', StudentController.deleteAStudent)
+router.delete('/delete/:studentId', StudentController.deleteAStudent)
 
 
 export const StudentRoutes = router;

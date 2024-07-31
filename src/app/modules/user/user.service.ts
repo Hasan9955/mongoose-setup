@@ -27,7 +27,6 @@ const createStudentIntoDB = async (password: string, studentData: TStudent) => {
     try {
         session.startTransaction()
 
-
         //find academic semester info
         const academicSemester = await AcademicSemesterModel.findById(studentData.academicSemester);
 
@@ -37,32 +36,33 @@ const createStudentIntoDB = async (password: string, studentData: TStudent) => {
         //create user in DB (Transaction-1)
         const newUser = await UserModel.create([userData], { session });
 
-        if (newUser.length) {
+        if (!newUser.length) {
             throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create user.')
         }
-            //set id, _id in studentData
-            studentData.id = newUser[0].id;
-            studentData.user = newUser[0]._id;
+        //set id, _id in studentData
+        studentData.id = newUser[0].id;
+        studentData.user = newUser[0]._id;
 
-            //create a student (transaction-2)
-            const newStudent = await StudentModel.create([studentData], {session})
+        //create a student (transaction-2)
+        const newStudent = await StudentModel.create([studentData], { session })
 
-            if(!newStudent){
-                throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create student.')
-            }
+        if (!newStudent) {
+            throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create student.')
+        }
 
-            await session.commitTransaction();
-            await session.endSession();
+        await session.commitTransaction();
+        await session.endSession();
 
 
-            return newStudent
-        
-    } catch (error) {
+        return newStudent;
 
+    } catch (error: any) {
         await session.abortTransaction();
         await session.endSession();
-        
+        throw new Error(error)
     }
+    
+}
 
 
 
@@ -83,7 +83,6 @@ const createStudentIntoDB = async (password: string, studentData: TStudent) => {
     // }
     // const result = await studentInstance.save();
 
-}
 
 
 

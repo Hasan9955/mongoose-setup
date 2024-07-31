@@ -37,35 +37,38 @@ const localGuardianValidationZodSchema = zod_1.z.object({
 });
 // Student Schema
 const studentValidationZodSchema = zod_1.z.object({
-    id: zod_1.z.string().min(1, 'ID is required'),
-    password: zod_1.z.string().min(6, "password should be minimum 6 character. zod!!"),
-    name: userNameValidationZodSchema,
-    gender: zod_1.z.enum(['male', 'female', 'other'], {
-        errorMap: (issue, _ctx) => {
-            if (issue.code === 'invalid_enum_value') {
-                return { message: "{VALUE} is not supported. The gender field can be one of the following: 'male', 'female' or 'other'" };
-            }
-            return { message: 'Gender is required' };
-        },
-    }),
-    email: zod_1.z.string().email('{VALUE} is not valid email'),
-    dateOfBirth: zod_1.z.string(),
-    contactNumber: zod_1.z.string()
-        .min(11, 'The length of ContactNO should be 11')
-        .max(11, 'The length of ContactNO should be 11')
-        .refine((value) => /^[0-9]+$/.test(value), 'ContactNO should only contain numbers'),
-    emergencyContactNo: zod_1.z.string()
-        .min(11, 'The length of ContactNO should be 11')
-        .max(11, 'The length of ContactNO should be 11')
-        .refine((value) => /^[0-9]+$/.test(value), 'ContactNO should only contain numbers'),
-    bloodGroup: zod_1.z.string(),
-    presentAddress: zod_1.z.string(),
-    permanentAddress: zod_1.z.string(),
-    guardian: guardianValidationZodSchema,
-    localGuardian: localGuardianValidationZodSchema,
-    studentStatus: zod_1.z.enum(['active', 'blocked']).default('active'),
-    profilePic: zod_1.z.string(),
-    isDeleted: zod_1.z.boolean().default(false)
+    password: zod_1.z.string().min(6, 'password should be at last 6 character').optional(),
+    student: zod_1.z.object({
+        name: userNameValidationZodSchema,
+        gender: zod_1.z.enum(['male', 'female', 'other'], {
+            errorMap: (issue, _ctx) => {
+                if (issue.code === 'invalid_enum_value') {
+                    return { message: "{VALUE} is not supported. The gender field can be one of the following: 'male', 'female' or 'other'" };
+                }
+                return { message: 'Gender is required' };
+            },
+        }),
+        email: zod_1.z.string().email('{VALUE} is not valid email'),
+        dateOfBirth: zod_1.z.string(),
+        contactNumber: zod_1.z.string()
+            .min(11, 'The length of ContactNO should be 11')
+            .max(11, 'The length of ContactNO should be 11')
+            .refine((value) => /^[0-9]+$/.test(value), 'ContactNO should only contain numbers'),
+        emergencyContactNo: zod_1.z.string()
+            .min(11, 'The length of ContactNO should be 11')
+            .max(11, 'The length of ContactNO should be 11')
+            .refine((value) => /^[0-9]+$/.test(value), 'ContactNO should only contain numbers'),
+        bloodGroup: zod_1.z.string(),
+        presentAddress: zod_1.z.string(),
+        permanentAddress: zod_1.z.string(),
+        guardian: guardianValidationZodSchema,
+        localGuardian: localGuardianValidationZodSchema,
+        studentStatus: zod_1.z.enum(['active', 'blocked']).default('active'),
+        profilePic: zod_1.z.string(),
+        academicSemester: zod_1.z.string(),
+        academicDepartment: zod_1.z.string(),
+        isDeleted: zod_1.z.boolean().default(false)
+    })
 });
 // type Student = z.infer<typeof studentValidationZodSchema>
 exports.default = studentValidationZodSchema;

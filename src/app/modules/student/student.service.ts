@@ -1,4 +1,7 @@
+import { UserModel } from './../user/user.model';
+import httpStatus from 'http-status';
 // import deepMerge from '../../utility/deepMerge';
+import mongoose from 'mongoose';
 import AppError from '../../Errors/AppError';
 import { TStudent } from './student.interface';
 import { StudentModel } from './student.model';
@@ -9,46 +12,80 @@ import { merge } from 'lodash'
 
 const getAllStudent = async () => {
     const result = await StudentModel.find()
-    .populate('user')
-    .populate('academicSemester')
-    .populate({
-        path: 'academicDepartment',
-        populate: {
-            path: 'academicFaculty'
-        }
-    })
+        .populate('user')
+        .populate('academicSemester')
+        .populate({
+            path: 'academicDepartment',
+            populate: {
+                path: 'academicFaculty'
+            }
+        })
     return result;
 }
 
 
-const findAStudent = async (reqId: string) => {
+const findAStudent = async (id: string) => {
     // const result = await StudentModel.findOne({ id: reqId })
 
     //get result by using aggritation.
-    const result = await StudentModel.findById(reqId)
-    .populate('user')
-    .populate('academicSemester')
-    .populate({
-        path: 'academicDepartment',
-        populate: {
-            path: 'academicFaculty'
+    const result = await StudentModel.findOne({ id })
+        .populate('user')
+        .populate('academicSemester')
+        .populate({
+            path: 'academicDepartment',
+            populate: {
+                path: 'academicFaculty'
+            }
+        })
+
+    return result;
+}
+
+const deleteStudent = async (id: string) => {
+
+    const session = await mongoose.startSession();
+
+    try {
+        session.startTransaction();
+
+        const deletedStudent = await StudentModel.findOneAndUpdate(
+            { id },
+            { isDeleted: true },
+            { new: true, session }
+        )
+
+        if (!deletedStudent) {
+            throw new AppError(httpStatus.BAD_REQUEST, 'Failed to delete student.')
         }
-    })
 
-    return result;
+
+        const deleteUser = await UserModel.findOneAndUpdate(
+            { id },
+            { isDeleted: true },
+            { new: true, session }
+        )
+
+        if (!deleteUser) {
+            throw new AppError(httpStatus.BAD_REQUEST, 'Failed to delete user.')
+        }
+
+        await session.commitTransaction();
+        await session.endSession();
+
+        return { deleteStudent, deleteUser }
+
+    } catch (error) {
+        await session.abortTransaction();
+        await session.endSession();
+        throw new AppError(400, 'Failed to delete student.')
+    }
+
+
 }
 
-const deleteStudent = async (reqId: string) => {
-    const result = await StudentModel.updateOne({ id: reqId }, {
-        isDeleted: true
-    })
+const updateStudent = async (id: string, data: TStudent) => {
 
-    return result;
-}
-
-const updateStudent = async (id: string, data: Object) => {
-
-    const student = await StudentModel.findOne({ id: id })
+    const student = await StudentModel.findOne({ id })
 
     if (!student) {
         throw new AppError(404, 'Student is not exists!')
@@ -72,7 +109,7 @@ const updateStudent = async (id: string, data: Object) => {
     //     runValidators: true
     // }) 
 
-    
+
     //Method: 3
     //update by updateOne
     // const result = await StudentModel.updateOne({ id: id }, {
@@ -94,7 +131,7 @@ const updateStudent = async (id: string, data: Object) => {
 }
 
 
-export const StudentServices = { 
+export const StudentServices = {
     getAllStudent,
     findAStudent,
     deleteStudent,

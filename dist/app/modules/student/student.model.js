@@ -40,6 +40,8 @@ const userNameSchema = new mongoose_1.Schema({
             message: "{VALUE} is not valid value."
         }
     }
+}, {
+    _id: false
 });
 const guardianSchema = new mongoose_1.Schema({
     fatherName: String,
@@ -48,12 +50,16 @@ const guardianSchema = new mongoose_1.Schema({
     motherName: String,
     motherOccupation: String,
     motherContactNo: String,
+}, {
+    _id: false
 });
 const localGuardianSchema = new mongoose_1.Schema({
     name: String,
     occupation: String,
     contactNo: String,
     address: String,
+}, {
+    _id: false
 });
 const StudentSchema = new mongoose_1.Schema({
     id: {
@@ -65,7 +71,7 @@ const StudentSchema = new mongoose_1.Schema({
         type: mongoose_1.Schema.Types.ObjectId,
         required: [true, 'user id is required'],
         unique: true,
-        ref: 'User'
+        ref: 'user'
     },
     name: {
         type: userNameSchema,
@@ -81,10 +87,12 @@ const StudentSchema = new mongoose_1.Schema({
     },
     email: {
         type: String,
+        unique: true,
         validate: {
             validator: (value) => validator_1.default.isEmail(value),
             message: "{VALUE} is not valid email."
-        }
+        },
+        required: [true, 'Email is required.']
     },
     dateOfBirth: { type: String },
     contactNumber: {
@@ -109,6 +117,14 @@ const StudentSchema = new mongoose_1.Schema({
     localGuardian: {
         type: localGuardianSchema,
         required: true
+    },
+    academicSemester: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: 'AcademicSemester'
+    },
+    academicDepartment: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: 'AcademicDepartment'
     },
     profilePic: String,
     isDeleted: {

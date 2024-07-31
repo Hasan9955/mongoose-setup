@@ -6,7 +6,9 @@ import validationRequest from '../../Middlewares/validator';
 const router = express.Router();
 
 
-router.post('/create-student', validationRequest(studentValidationZodSchema), userController.createStudent)
+router.post('/create-student', 
+    // validationRequest(studentValidationZodSchema), 
+    userController.createStudent)
 
 
 export const userRoutes = router;

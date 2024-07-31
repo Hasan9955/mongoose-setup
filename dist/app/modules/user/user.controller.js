@@ -16,36 +16,32 @@ exports.userController = void 0;
 const user_service_1 = require("./user.service");
 const sendResponse_1 = __importDefault(require("../../utility/sendResponse"));
 const http_status_1 = __importDefault(require("http-status"));
-const createStudent = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { password, student: studentData } = req.body;
-        //chapter of joi
-        //validate req.body data by joi schema. 
-        // const { error, value } = studentValidationJoiSchema.validate(studentData)
-        // if (error) {
-        //     console.log(error);
-        //     res.status(500).json({
-        //         success: false, 
-        //         message: 'An error is going on joi schema!!!',
-        //         error: error.details
-        //     })
-        // } 
-        //chapter of zod
-        //Data validation using zod
-        // const zodparseData = studentValidationZodSchema.parse(studentData)
-        //will call service func to send this data 
-        const result = yield user_service_1.userService.createStudentIntoDB(password, studentData);
-        (0, sendResponse_1.default)(res, {
-            statusCode: http_status_1.default.OK,
-            success: true,
-            message: 'Student is created successfully',
-            data: result
-        });
-    }
-    catch (error) {
-        next(error);
-    }
-});
+const catchAsync_1 = __importDefault(require("../../utility/catchAsync"));
+const createStudent = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { password, student: studentData } = req.body;
+    //chapter of joi
+    //validate req.body data by joi schema. 
+    // const { error, value } = studentValidationJoiSchema.validate(studentData)
+    // if (error) {
+    //     console.log(error);
+    //     res.status(500).json({
+    //         success: false, 
+    //         message: 'An error is going on joi schema!!!',
+    //         error: error.details
+    //     })
+    // } 
+    //chapter of zod
+    //Data validation using zod
+    // const zodparseData = studentValidationZodSchema.parse(studentData)
+    //will call service func to send this data 
+    const result = yield user_service_1.userService.createStudentIntoDB(password, studentData);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'Student is created successfully',
+        data: result
+    });
+}));
 exports.userController = {
     createStudent
 };

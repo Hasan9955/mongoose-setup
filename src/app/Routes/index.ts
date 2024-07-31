@@ -4,6 +4,7 @@ import { Router } from "express";
 import { StudentRoutes } from "../modules/student/student.route";
 import { academicFacultyRoutes } from '../modules/academicFaculty/academicFaculty.route';
 import { AcademicDepartmentRoutes } from '../modules/AcademicDepartment/academicDepartment.route';
+import { todoRoutes } from '../modules/TodoApp/todo.route';
 
 const router = Router();
 
@@ -27,6 +28,10 @@ const allRoutes = [
     {
         path: '/academic-department',
         route: AcademicDepartmentRoutes
+    },
+    {
+        path: '/todo',
+        route: todoRoutes
     }
 ]
 

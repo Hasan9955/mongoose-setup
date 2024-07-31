@@ -9,7 +9,7 @@ const express_1 = __importDefault(require("express"));
 const router = express_1.default.Router();
 // will call controller func
 router.get('/', student_controller_1.StudentController.getAllStudents);
-router.put('/update/:id', student_controller_1.StudentController.updateAStudent);
-router.get('/:id', student_controller_1.StudentController.findAStudent);
-router.delete('/delete/:id', student_controller_1.StudentController.deleteAStudent);
+router.patch('/update/:id', student_controller_1.StudentController.updateAStudent);
+router.get('/:studentId', student_controller_1.StudentController.findAStudent);
+router.delete('/delete/:studentId', student_controller_1.StudentController.deleteAStudent);
 exports.StudentRoutes = router;

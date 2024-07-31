@@ -7,5 +7,7 @@ exports.userRoutes = void 0;
 const express_1 = __importDefault(require("express"));
 const user_controller_1 = require("./user.controller");
 const router = express_1.default.Router();
-router.post('/create-student', user_controller_1.userController.createStudent);
+router.post('/create-student', 
+// validationRequest(studentValidationZodSchema), 
+user_controller_1.userController.createStudent);
 exports.userRoutes = router;

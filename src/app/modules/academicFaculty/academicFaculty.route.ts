@@ -8,7 +8,9 @@ const route = express.Router();
 
 route.get('/', AcademicFacultyControllers.getAllAcademicFaculties)
 
-route.post('/create-academic-faculty', validationRequest(AcademicFacultyValidationSchema), AcademicFacultyControllers.createAcademicFaculty)
+route.post('/create-academic-faculty', 
+    validationRequest(AcademicFacultyValidationSchema),
+     AcademicFacultyControllers.createAcademicFaculty)
 
 route.get('/:id', AcademicFacultyControllers.getSingleAcademicFaculty)
 

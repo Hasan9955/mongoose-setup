@@ -19,7 +19,7 @@ const getAllStudents: RequestHandler = catchAsync(async (req, res) => {
 
 
 const findAStudent: RequestHandler = catchAsync(async (req, res) => {
-    const {studentId} = req.params;
+    const { studentId } = req.params;
 
     const result = await StudentServices.findAStudent(studentId)
 

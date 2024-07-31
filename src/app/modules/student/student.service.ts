@@ -28,7 +28,7 @@ const findAStudent = async (id: string) => {
     // const result = await StudentModel.findOne({ id: reqId })
 
     //get result by using aggritation.
-    const result = await StudentModel.findOne({ id })
+    const result = await StudentModel.findOne({ _id: id })
         .populate('user')
         .populate('academicSemester')
         .populate({

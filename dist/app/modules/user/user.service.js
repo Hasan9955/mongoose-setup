@@ -56,17 +56,17 @@ const createStudentIntoDB = (password, studentData) => __awaiter(void 0, void 0,
         yield session.endSession();
         throw new Error(error);
     }
-    // This is example of Mongoose built in static method.
-    // if (await StudentModel.isStudentExists(studentData.id)) {
-    //     throw new Error("User already exists.")
-    // }
-    //This is example of Mongoose built in instance method.
-    // const studentInstance = new StudentModel(student)
-    // if(await studentInstance.isUserExists(student.id)){
-    //     throw new Error('User already exists!')
-    // }
-    // const result = await studentInstance.save();
 });
+// This is example of Mongoose built in static method.
+// if (await StudentModel.isStudentExists(studentData.id)) {
+//     throw new Error("User already exists.")
+// }
+//This is example of Mongoose built in instance method.
+// const studentInstance = new StudentModel(student)
+// if(await studentInstance.isUserExists(student.id)){
+//     throw new Error('User already exists!')
+// }
+// const result = await studentInstance.save();
 exports.userService = {
     createStudentIntoDB
 };

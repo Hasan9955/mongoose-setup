@@ -35,7 +35,7 @@ const getAllStudent = () => __awaiter(void 0, void 0, void 0, function* () {
 const findAStudent = (id) => __awaiter(void 0, void 0, void 0, function* () {
     // const result = await StudentModel.findOne({ id: reqId })
     //get result by using aggritation.
-    const result = yield student_model_1.StudentModel.findOne({ id })
+    const result = yield student_model_1.StudentModel.findOne({ _id: id })
         .populate('user')
         .populate('academicSemester')
         .populate({

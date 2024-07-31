@@ -10,7 +10,7 @@ route.get('/', AcademicDepartControllers.getAcademicDepartments)
 route.get('/:id', AcademicDepartControllers.getSingleAcademicDepartment);
 
 route.post('/create-academic-department', 
-    validationRequest(AcademicDepartmentValidation), 
+    // validationRequest(AcademicDepartmentValidation), 
     AcademicDepartControllers.createAcademicDepartment);
 
 route.put('/:id', AcademicDepartControllers.updateAcademicDepartment);

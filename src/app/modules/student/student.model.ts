@@ -134,7 +134,7 @@ const StudentSchema = new Schema<TStudent, TStudentModel>({
 
 //Mongoose virtual method       
 StudentSchema.virtual('fullName').get(function () {
-    return `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`
+    return `${this?.name?.firstName} ${this?.name?.middleName} ${this?.name?.lastName}`
 
 })
 

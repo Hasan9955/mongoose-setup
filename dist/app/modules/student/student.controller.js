@@ -17,7 +17,8 @@ const student_service_1 = require("./student.service");
 const catchAsync_1 = __importDefault(require("../../utility/catchAsync"));
 // import studentValidationJoiSchema from './student.validation';
 const getAllStudents = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield student_service_1.StudentServices.getAllStudent();
+    const query = req.query;
+    const result = yield student_service_1.StudentServices.getAllStudent(query);
     res.status(200).json({
         success: true,
         message: 'Students is retrieved successfully',

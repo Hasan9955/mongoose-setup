@@ -1,6 +1,5 @@
 import { UserModel } from './../user/user.model';
 import httpStatus from 'http-status';
-// import deepMerge from '../../utility/deepMerge';
 import mongoose from 'mongoose';
 import AppError from '../../Errors/AppError';
 import { TStudent } from './student.interface';
@@ -10,9 +9,30 @@ import { merge } from 'lodash'
 
 
 
-const getAllStudent = async () => {
-    const result = await StudentModel.find()
-        .populate('user')
+const getAllStudent = async (query: Record<string, unknown>) => {
+
+    const queryObj = { ...query }
+
+    //search Query
+    let searchTerm = '';
+    const searchableFields = ['email', 'presentAddress', 'name.firstName'];
+    if (query.searchTerm) {
+        searchTerm = query.searchTerm as string;
+    }
+    const searchQuery = StudentModel.find({
+        $or: searchableFields.map((field) => ({
+            [field]: { $regex: searchTerm, $options: 'i' },
+        }))
+    })
+
+    //Filter query
+    const excludeFields = ['searchTerm', 'sort', 'limit', 'skip', 'page', 'fields']
+    excludeFields.forEach(el => delete queryObj[el])
+    const filterQuery = searchQuery.find(queryObj)
+        .populate({
+            path: 'user',
+            select: '-password'
+        })
         .populate('academicSemester')
         .populate({
             path: 'academicDepartment',
@@ -20,7 +40,39 @@ const getAllStudent = async () => {
                 path: 'academicFaculty'
             }
         })
-    return result;
+
+    //sorting
+    let sort: string = '-createdAt'
+    if (query.sort) {
+        sort = query.sort as string;
+    }
+    const sortQuery = filterQuery.sort(sort)
+
+    let page = 1;
+    let skip = 0;
+    let limit = null
+    if (query.limit) {
+        limit = Number(query.limit)
+    }
+    if (query.page && limit !== null) {
+        page = Number(query.page)
+        skip = (page - 1) * limit
+    }
+    
+    const paginateQuery = sortQuery.skip(skip);
+
+    const limitQuery = paginateQuery.limit(limit as number);
+
+
+    //field limiting
+    let fields = '-__v'
+    if (query.fields) {
+        fields = (query.fields as string).split(',').join(' ') 
+    }
+    const fieldLimitQuery = await limitQuery.select(fields)
+
+
+    return fieldLimitQuery;
 }
 
 
@@ -29,7 +81,10 @@ const findAStudent = async (id: string) => {
 
     //get result by using aggritation.
     const result = await StudentModel.findOne({ _id: id })
-        .populate('user')
+        .populate({
+            path: 'user',
+            select: '-password'
+        })
         .populate('academicSemester')
         .populate({
             path: 'academicDepartment',

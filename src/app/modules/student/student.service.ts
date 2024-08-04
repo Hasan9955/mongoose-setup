@@ -5,13 +5,21 @@ import AppError from '../../Errors/AppError';
 import { TStudent } from './student.interface';
 import { StudentModel } from './student.model';
 import { merge } from 'lodash'
-
+import QueryBuilder from '../../builder/QueryBuilder';
+import { searchableFields } from './student.constant';
 
 
 
 const getAllStudent = async (query: Record<string, unknown>) => {
 
-    const queryObj = { ...query }
+    const studentQuery = new QueryBuilder(StudentModel.find(), query).search(searchableFields).filter().sort().paginate().fields();
+
+    const result = await studentQuery.modelQuery;
+    return result;
+    
+
+    //Raw query
+    /* const queryObj = { ...query }
 
     //search Query
     let searchTerm = '';
@@ -72,14 +80,14 @@ const getAllStudent = async (query: Record<string, unknown>) => {
     const fieldLimitQuery = await limitQuery.select(fields)
 
 
-    return fieldLimitQuery;
+    return fieldLimitQuery; */
 }
 
 
 const findAStudent = async (id: string) => {
     // const result = await StudentModel.findOne({ id: reqId })
 
-    //get result by using aggritation.
+    //get result by using aggregations.
     const result = await StudentModel.findOne({ _id: id })
         .populate({
             path: 'user',

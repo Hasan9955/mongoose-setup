@@ -19,63 +19,79 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const AppError_1 = __importDefault(require("../../Errors/AppError"));
 const student_model_1 = require("./student.model");
 const lodash_1 = require("lodash");
+const QueryBuilder_1 = __importDefault(require("../../builder/QueryBuilder"));
+const student_constant_1 = require("./student.constant");
 const getAllStudent = (query) => __awaiter(void 0, void 0, void 0, function* () {
-    const queryObj = Object.assign({}, query);
+    const studentQuery = new QueryBuilder_1.default(student_model_1.StudentModel.find(), query).search(student_constant_1.searchableFields).filter().sort().paginate().fields();
+    const result = yield studentQuery.modelQuery;
+    return result;
+    //Raw query
+    /* const queryObj = { ...query }
+
     //search Query
     let searchTerm = '';
     const searchableFields = ['email', 'presentAddress', 'name.firstName'];
     if (query.searchTerm) {
-        searchTerm = query.searchTerm;
+        searchTerm = query.searchTerm as string;
     }
-    const searchQuery = student_model_1.StudentModel.find({
+    const searchQuery = StudentModel.find({
         $or: searchableFields.map((field) => ({
             [field]: { $regex: searchTerm, $options: 'i' },
         }))
-    });
+    })
+
     //Filter query
-    const excludeFields = ['searchTerm', 'sort', 'limit', 'skip', 'page', 'fields'];
-    excludeFields.forEach(el => delete queryObj[el]);
+    const excludeFields = ['searchTerm', 'sort', 'limit', 'skip', 'page', 'fields']
+    excludeFields.forEach(el => delete queryObj[el])
     const filterQuery = searchQuery.find(queryObj)
         .populate({
-        path: 'user',
-        select: '-password'
-    })
+            path: 'user',
+            select: '-password'
+        })
         .populate('academicSemester')
         .populate({
-        path: 'academicDepartment',
-        populate: {
-            path: 'academicFaculty'
-        }
-    });
+            path: 'academicDepartment',
+            populate: {
+                path: 'academicFaculty'
+            }
+        })
+
     //sorting
-    let sort = '-createdAt';
+    let sort: string = '-createdAt'
     if (query.sort) {
-        sort = query.sort;
+        sort = query.sort as string;
     }
-    const sortQuery = filterQuery.sort(sort);
+    const sortQuery = filterQuery.sort(sort)
+
     let page = 1;
     let skip = 0;
-    let limit = null;
+    let limit = null
     if (query.limit) {
-        limit = Number(query.limit);
+        limit = Number(query.limit)
     }
     if (query.page && limit !== null) {
-        page = Number(query.page);
-        skip = (page - 1) * limit;
+        page = Number(query.page)
+        skip = (page - 1) * limit
     }
+    
     const paginateQuery = sortQuery.skip(skip);
-    const limitQuery = paginateQuery.limit(limit);
+
+    const limitQuery = paginateQuery.limit(limit as number);
+
+
     //field limiting
-    let fields = '-__v';
+    let fields = '-__v'
     if (query.fields) {
-        fields = query.fields.split(',').join(' ');
+        fields = (query.fields as string).split(',').join(' ')
     }
-    const fieldLimitQuery = yield limitQuery.select(fields);
-    return fieldLimitQuery;
+    const fieldLimitQuery = await limitQuery.select(fields)
+
+
+    return fieldLimitQuery; */
 });
 const findAStudent = (id) => __awaiter(void 0, void 0, void 0, function* () {
     // const result = await StudentModel.findOne({ id: reqId })
-    //get result by using aggritation.
+    //get result by using aggregations.
     const result = yield student_model_1.StudentModel.findOne({ _id: id })
         .populate({
         path: 'user',

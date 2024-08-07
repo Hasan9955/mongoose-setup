@@ -12,7 +12,17 @@ import { searchableFields } from './student.constant';
 
 const getAllStudent = async (query: Record<string, unknown>) => {
 
-    const studentQuery = new QueryBuilder(StudentModel.find(), query).search(searchableFields).filter().sort().paginate().fields();
+    const studentQuery = new QueryBuilder(StudentModel.find()
+    .populate({
+        path: 'user',
+        select: '-password'
+    })
+    .populate('academicSemester')
+    .populate({
+       path: 'academicDepartment',
+       populate: ('academicFaculty')
+    })
+    , query).search(searchableFields).filter().sort().paginate().fields();
 
     const result = await studentQuery.modelQuery;
     return result;

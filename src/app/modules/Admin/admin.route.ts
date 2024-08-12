@@ -1,7 +1,7 @@
 import express from 'express'; 
-import { AdminControllers } from './admin.controller'; 
-import { updateAdminValidationSchema } from './Admin.validation';
+import { AdminControllers } from './admin.controller';  
 import validationRequest from '../../Middlewares/validator';
+import { updateAdminValidationSchema } from './admin.validation';
 
 const router = express.Router();
 
@@ -18,3 +18,4 @@ router.patch(
 router.delete('/:adminId', AdminControllers.deleteAdmin);
 
 export const AdminRoutes = router;
+

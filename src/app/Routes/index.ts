@@ -5,6 +5,9 @@ import { StudentRoutes } from "../modules/student/student.route";
 import { academicFacultyRoutes } from '../modules/academicFaculty/academicFaculty.route';
 import { AcademicDepartmentRoutes } from '../modules/AcademicDepartment/academicDepartment.route';
 import { todoRoutes } from '../modules/TodoApp/todo.route';
+import { AdminRoutes } from '../modules/Admin/admin.route';
+import { FacultyRoutes } from '../modules/Faculty/faculty.route';
+import { CourseRoute } from '../modules/Course/couse.route';
 
 const router = Router();
 
@@ -28,6 +31,18 @@ const allRoutes = [
     {
         path: '/academic-department',
         route: AcademicDepartmentRoutes
+    },
+    {
+        path: '/admin',
+        route: AdminRoutes
+    },
+    {
+        path: '/faculty',
+        route: FacultyRoutes
+    },
+    {
+        path: '/course',
+        route: CourseRoute
     },
     {
         path: '/todo',

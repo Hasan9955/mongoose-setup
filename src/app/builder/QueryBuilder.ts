@@ -13,9 +13,9 @@ constructor(modelQuery: Query<T[], T>, query: Record<string, unknown>){
 
 //Method 1: Search
 search(searchableFields: string[]){
-    if(this?.query.searchTerm){
+    if(this?.query?.searchTerm){
         this.modelQuery = this.modelQuery.find({
-            $or: searchableFields.map((field) => ({
+            $or: searchableFields?.map((field) => ({
                 [field]: { $regex: this.query.searchTerm, $options: 'i' },
             }) as FilterQuery<T>)
         })

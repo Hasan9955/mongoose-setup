@@ -22,7 +22,16 @@ const lodash_1 = require("lodash");
 const QueryBuilder_1 = __importDefault(require("../../builder/QueryBuilder"));
 const student_constant_1 = require("./student.constant");
 const getAllStudent = (query) => __awaiter(void 0, void 0, void 0, function* () {
-    const studentQuery = new QueryBuilder_1.default(student_model_1.StudentModel.find(), query).search(student_constant_1.searchableFields).filter().sort().paginate().fields();
+    const studentQuery = new QueryBuilder_1.default(student_model_1.StudentModel.find()
+        .populate({
+        path: 'user',
+        select: '-password'
+    })
+        .populate('academicSemester')
+        .populate({
+        path: 'academicDepartment',
+        populate: ('academicFaculty')
+    }), query).search(student_constant_1.searchableFields).filter().sort().paginate().fields();
     const result = yield studentQuery.modelQuery;
     return result;
     //Raw query

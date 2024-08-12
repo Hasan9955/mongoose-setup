@@ -7,6 +7,9 @@ const student_route_1 = require("../modules/student/student.route");
 const academicFaculty_route_1 = require("../modules/academicFaculty/academicFaculty.route");
 const academicDepartment_route_1 = require("../modules/AcademicDepartment/academicDepartment.route");
 const todo_route_1 = require("../modules/TodoApp/todo.route");
+const admin_route_1 = require("../modules/Admin/admin.route");
+const faculty_route_1 = require("../modules/Faculty/faculty.route");
+const couse_route_1 = require("../modules/Course/couse.route");
 const router = (0, express_1.Router)();
 const allRoutes = [
     {
@@ -28,6 +31,18 @@ const allRoutes = [
     {
         path: '/academic-department',
         route: academicDepartment_route_1.AcademicDepartmentRoutes
+    },
+    {
+        path: '/admin',
+        route: admin_route_1.AdminRoutes
+    },
+    {
+        path: '/faculty',
+        route: faculty_route_1.FacultyRoutes
+    },
+    {
+        path: '/course',
+        route: couse_route_1.CourseRoute
     },
     {
         path: '/todo',

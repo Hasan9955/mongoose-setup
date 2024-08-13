@@ -69,7 +69,7 @@ const facultySchema = new mongoose_1.Schema({
         type: String,
         required: [true, 'Emergency contact number is required'],
     },
-    bloogGroup: {
+    bloodGroup: {
         type: String,
         enum: {
             values: faculty_constant_1.BloodGroup,
@@ -87,8 +87,8 @@ const facultySchema = new mongoose_1.Schema({
     profileImg: { type: String },
     academicDepartment: {
         type: mongoose_1.Schema.Types.ObjectId,
-        required: [true, 'User id is required'],
-        ref: 'User',
+        required: [true, 'Academic Department id is required'],
+        ref: 'AcademicDepartment',
     },
     isDeleted: {
         type: Boolean,
@@ -103,9 +103,9 @@ const facultySchema = new mongoose_1.Schema({
 facultySchema.virtual('fullName').get(function () {
     var _a, _b, _c;
     return (((_a = this === null || this === void 0 ? void 0 : this.name) === null || _a === void 0 ? void 0 : _a.firstName) +
-        '' +
+        ' ' +
         ((_b = this === null || this === void 0 ? void 0 : this.name) === null || _b === void 0 ? void 0 : _b.middleName) +
-        '' +
+        ' ' +
         ((_c = this === null || this === void 0 ? void 0 : this.name) === null || _c === void 0 ? void 0 : _c.lastName));
 });
 // filter out deleted documents

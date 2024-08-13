@@ -22,6 +22,8 @@ router.patch(
 
 router.get('/', CourseController.getAllCourses)
 
+router.put('/:courseId/assign-faculties', CourseController.assignFaculties)
+
 router.get('/:id', CourseController.getSingleCourse)
 
 router.delete('/:id', CourseController.deleteCourse)

@@ -23,7 +23,7 @@ const getSingleFaculty = (0, catchAsync_1.default)((req, res) => __awaiter(void 
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: 'Faculty is retrieved succesfully',
+        message: 'Faculty is retrieved successfully',
         data: result,
     });
 }));
@@ -32,7 +32,7 @@ const getAllFaculties = (0, catchAsync_1.default)((req, res) => __awaiter(void 0
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: 'Faculties are retrieved succesfully',
+        message: 'Faculties are retrieved successfully',
         data: result,
     });
 }));
@@ -43,7 +43,7 @@ const updateFaculty = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, 
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: 'Faculty is updated succesfully',
+        message: 'Faculty is updated successfully',
         data: result,
     });
 }));
@@ -53,7 +53,7 @@ const deleteFaculty = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, 
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: 'Faculty is deleted succesfully',
+        message: 'Faculty is deleted successfully',
         data: result,
     });
 }));

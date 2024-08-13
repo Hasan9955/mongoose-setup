@@ -75,10 +75,21 @@ const deleteCourse = (id) => __awaiter(void 0, void 0, void 0, function* () {
     });
     return result;
 });
+const assignFaculties = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield course_model_1.CourseFaculty.findByIdAndUpdate(id, {
+        course: id,
+        $addToSet: { faculties: { $each: payload } }
+    }, {
+        upsert: true,
+        new: true
+    });
+    return result;
+});
 exports.CourseServices = {
     createCourse,
     getAllCourses,
     getSingleCourse,
     updateCourse,
-    deleteCourse
+    deleteCourse,
+    assignFaculties
 };

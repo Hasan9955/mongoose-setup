@@ -1,7 +1,7 @@
 import catchAsync from "../../utility/catchAsync";
 import { CourseServices } from "./course.service";
 
-const createCourse = catchAsync(async(req, res) =>{
+const createCourse = catchAsync(async (req, res) => {
     const result = await CourseServices.createCourse(req.body);
     res.status(200).json({
         success: true,
@@ -11,7 +11,7 @@ const createCourse = catchAsync(async(req, res) =>{
 })
 
 
-const getAllCourses = catchAsync(async(req, res) =>{
+const getAllCourses = catchAsync(async (req, res) => {
     const result = await CourseServices.getAllCourses(req.query);
     res.status(200).json({
         success: true,
@@ -20,7 +20,7 @@ const getAllCourses = catchAsync(async(req, res) =>{
     })
 })
 
-const getSingleCourse = catchAsync(async(req, res) =>{
+const getSingleCourse = catchAsync(async (req, res) => {
     const id = req.params.id;
     const result = await CourseServices.getSingleCourse(id);
     res.status(200).json({
@@ -30,8 +30,8 @@ const getSingleCourse = catchAsync(async(req, res) =>{
     })
 });
 
-const deleteCourse = catchAsync(async (req, res) =>{
-    const {id} = req.params;
+const deleteCourse = catchAsync(async (req, res) => {
+    const { id } = req.params;
     const result = await CourseServices.deleteCourse(id);
 
     res.status(200).json({
@@ -41,10 +41,22 @@ const deleteCourse = catchAsync(async (req, res) =>{
     })
 })
 
-const updateCourse = catchAsync(async(req, res) =>{
+const assignFaculties = catchAsync(async (req, res) => {
+    const { courseId } = req.params;
+    const { faculties } = req.body;
+    const result = await CourseServices.assignFaculties(courseId, faculties);
+
+    res.status(200).json({
+        success: true,
+        message: 'Faculties assigned successfully.',
+        data: result
+    })
+})
+
+const updateCourse = catchAsync(async (req, res) => {
     const id = req.params.id;
     const payload = req.body;
-    
+
     const result = await CourseServices.updateCourse(id, payload);
     res.status(200).json({
         success: true,
@@ -59,6 +71,7 @@ export const CourseController = {
     getAllCourses,
     getSingleCourse,
     updateCourse,
+    assignFaculties,
     deleteCourse
 }
 

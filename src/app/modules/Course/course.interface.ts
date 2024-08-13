@@ -6,11 +6,17 @@ export type TPreRequisiteCourses = {
 }
 
 
-export type TCourse ={
+export type TCourse = {
     title: string;
     prefix: string;
     code: number;
     credits: number;
     isDeleted: boolean;
     preRequisiteCourses: TPreRequisiteCourses[]
+}
+
+
+export type TCourseFaculty = {
+    course: Types.ObjectId;
+    faculties: [Types.ObjectId]
 }

@@ -15,7 +15,11 @@ const createCourseValidationSchema = zod_1.z.object({
     preRequisiteCourses: zod_1.z.array(PreRequisiteCourseValidationSchema).optional()
 });
 const updateCourseValidationSchema = createCourseValidationSchema.partial();
+const CourseFacultyValidationSchema = zod_1.z.object({
+    faculties: zod_1.z.array(zod_1.z.string())
+});
 exports.CourseValidations = {
     createCourseValidationSchema,
-    updateCourseValidationSchema
+    updateCourseValidationSchema,
+    CourseFacultyValidationSchema
 };

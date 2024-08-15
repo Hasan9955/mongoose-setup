@@ -8,6 +8,7 @@ import { todoRoutes } from '../modules/TodoApp/todo.route';
 import { AdminRoutes } from '../modules/Admin/admin.route';
 import { FacultyRoutes } from '../modules/Faculty/faculty.route';
 import { CourseRoute } from '../modules/Course/couse.route';
+import { semesterRegistrationRoutes } from '../modules/SemesterRegistration/semesterRegistration.route';
 
 const router = Router();
 
@@ -43,6 +44,10 @@ const allRoutes = [
     {
         path: '/course',
         route: CourseRoute
+    },
+    {
+        path: '/semester-registration',
+        route: semesterRegistrationRoutes
     },
     {
         path: '/todo',

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import validationRequest from "../../Middlewares/validator";
-import { semesterRegistrationValidationSchema } from "./semesterRegistration.validation";
+import { createSemesterRegistrationValidationSchema, updateSemesterRegistrationValidationSchema } from "./semesterRegistration.validation";
 import { semesterRegistrationControllers } from "./semesterRegistration.controller";
 
 
@@ -12,9 +12,12 @@ router.get('/', semesterRegistrationControllers.getAllSemesterRegistrations)
 router.get('/:id', semesterRegistrationControllers.getSingleSemesterRegistration)
 
 router.post('/create-semester-registration',
-    validationRequest(semesterRegistrationValidationSchema),
+    validationRequest(createSemesterRegistrationValidationSchema),
     semesterRegistrationControllers.createSemesterRegistration)
 
+router.patch('/:id',
+    validationRequest(updateSemesterRegistrationValidationSchema),
+    semesterRegistrationControllers.updateSemesterRegistration)
 
 export const semesterRegistrationRoutes = router;
 

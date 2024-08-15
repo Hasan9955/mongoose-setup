@@ -8,3 +8,9 @@ export const semesterRegistrationStatus = [
 export const semesterRegistrationSearchableFields = [
     'status'
 ]
+
+export const registrationStatus = {
+    UPCOMING: "UPCOMING",
+    ONGOING: "ONGOING",
+    ENDED: "ENDED"
+} as const

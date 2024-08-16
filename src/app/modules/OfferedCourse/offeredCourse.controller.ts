@@ -33,7 +33,9 @@ const getSingleOfferedCourses = catchAsync(async (req, res) => {
 })
 
 const UpdateOfferedCourse = catchAsync(async (req, res) => {
-    const result = await offeredCourseServices.UpdateOfferedCourses()
+    const {id} = req.params;
+    const data = req.body.body;
+    const result = await offeredCourseServices.UpdateOfferedCourses(id, data)
     
     res.status(200).json({
         success: true,

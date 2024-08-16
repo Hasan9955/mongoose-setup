@@ -5,6 +5,7 @@ import { AcademicSemesterModel } from "../academicSemester/academicSemester.mode
 import { registrationStatus, semesterRegistrationSearchableFields } from "./semesterRegistration.constant";
 import { TSemesterRegistration } from "./semesterRegistration.interface";
 import { SemesterRegistration } from "./semesterRegistration.model";
+import { OfferedCourse } from "../OfferedCourse/offeredCourse.model";
 
 
 const createSemesterRegistration = async (payload: TSemesterRegistration) => {
@@ -109,10 +110,29 @@ const updateSemesterRegistration = async (id: string, payload: TSemesterRegistra
 }
 
 
+const deleteSemesterRegistration = async (id: string) => {
+    const isSemesterRegistrationExists = await SemesterRegistration.findById(id);
+    if (!isSemesterRegistrationExists) {
+        throw new AppError(httpStatus.NOT_FOUND, 'Requested semester registration is not found.')
+    }
+
+    // Delete all offered courses under this registered semester
+    const deleteOfferedCoursesUnderThisSemester = await OfferedCourse.deleteMany({
+        semesterRegistration: id
+    }) 
+
+    // now delete the registered semester
+    const result = await SemesterRegistration.findByIdAndDelete(id)
+    return result;
+
+}
+
+
 
 export const semesterRegistrationServices = {
     createSemesterRegistration,
     getAllSemesterRegistrations,
     getSingleSemesterRegistration,
-    updateSemesterRegistration
+    updateSemesterRegistration,
+    deleteSemesterRegistration
 }

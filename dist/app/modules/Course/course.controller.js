@@ -49,16 +49,6 @@ const deleteCourse = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, v
         data: result
     });
 }));
-const assignFaculties = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { courseId } = req.params;
-    const { faculties } = req.body;
-    const result = yield course_service_1.CourseServices.assignFaculties(courseId, faculties);
-    res.status(200).json({
-        success: true,
-        message: 'Faculties assigned successfully.',
-        data: result
-    });
-}));
 const updateCourse = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     const payload = req.body;
@@ -69,11 +59,42 @@ const updateCourse = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, v
         data: result
     });
 }));
+//part 2 course faculties operations
+const getCourseFaculties = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield course_service_1.CourseServices.getCourseFaculties();
+    res.status(200).json({
+        success: true,
+        message: 'Course faculties retrieved successfully.',
+        data: result
+    });
+}));
+const assignFacultiesIntoCourse = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { courseId } = req.params;
+    const { faculties } = req.body;
+    const result = yield course_service_1.CourseServices.assignFaculties(courseId, faculties);
+    res.status(200).json({
+        success: true,
+        message: 'Faculties assigned successfully.',
+        data: result
+    });
+}));
+const deleteFacultiesFromCourse = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { courseId } = req.params;
+    const { faculties } = req.body;
+    const result = yield course_service_1.CourseServices.deleteFaculties(courseId, faculties);
+    res.status(200).json({
+        success: true,
+        message: 'Delete faculties from course successfully.',
+        data: result
+    });
+}));
 exports.CourseController = {
     createCourse,
     getAllCourses,
     getSingleCourse,
     updateCourse,
-    assignFaculties,
-    deleteCourse
+    deleteCourse,
+    getCourseFaculties,
+    assignFacultiesIntoCourse,
+    deleteFacultiesFromCourse
 };

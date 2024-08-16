@@ -10,6 +10,7 @@ const todo_route_1 = require("../modules/TodoApp/todo.route");
 const admin_route_1 = require("../modules/Admin/admin.route");
 const faculty_route_1 = require("../modules/Faculty/faculty.route");
 const couse_route_1 = require("../modules/Course/couse.route");
+const semesterRegistration_route_1 = require("../modules/SemesterRegistration/semesterRegistration.route");
 const router = (0, express_1.Router)();
 const allRoutes = [
     {
@@ -43,6 +44,10 @@ const allRoutes = [
     {
         path: '/course',
         route: couse_route_1.CourseRoute
+    },
+    {
+        path: '/semester-registration',
+        route: semesterRegistration_route_1.semesterRegistrationRoutes
     },
     {
         path: '/todo',

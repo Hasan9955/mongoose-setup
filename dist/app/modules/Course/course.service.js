@@ -75,6 +75,11 @@ const deleteCourse = (id) => __awaiter(void 0, void 0, void 0, function* () {
     });
     return result;
 });
+//part 2 Course Faculties model operations
+const getCourseFaculties = () => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield course_model_1.CourseFaculty.find({});
+    return result;
+});
 const assignFaculties = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield course_model_1.CourseFaculty.findByIdAndUpdate(id, {
         course: id,
@@ -85,11 +90,21 @@ const assignFaculties = (id, payload) => __awaiter(void 0, void 0, void 0, funct
     });
     return result;
 });
+const deleteFaculties = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield course_model_1.CourseFaculty.findByIdAndUpdate(id, {
+        $pull: { faculties: { $in: payload } }
+    }, {
+        new: true
+    });
+    return result;
+});
 exports.CourseServices = {
     createCourse,
     getAllCourses,
     getSingleCourse,
     updateCourse,
     deleteCourse,
-    assignFaculties
+    getCourseFaculties,
+    assignFaculties,
+    deleteFaculties
 };

@@ -1,4 +1,4 @@
-import { UserModel } from './../user/user.model';
+import { User } from './../user/user.model';
 import httpStatus from 'http-status';
 import mongoose from 'mongoose';
 import AppError from '../../Errors/AppError';
@@ -13,20 +13,20 @@ import { searchableFields } from './student.constant';
 const getAllStudent = async (query: Record<string, unknown>) => {
 
     const studentQuery = new QueryBuilder(StudentModel.find()
-    .populate({
-        path: 'user',
-        select: '-password'
-    })
-    .populate('academicSemester')
-    .populate({
-       path: 'academicDepartment',
-       populate: ('academicFaculty')
-    })
-    , query).search(searchableFields).filter().sort().paginate().fields();
+        .populate({
+            path: 'user',
+            select: '-password'
+        })
+        .populate('academicSemester')
+        .populate({
+            path: 'academicDepartment',
+            populate: ('academicFaculty')
+        })
+        , query).search(searchableFields).filter().sort().paginate().fields();
 
     const result = await studentQuery.modelQuery;
     return result;
-    
+
 
     //Raw query
     /* const queryObj = { ...query }
@@ -132,7 +132,7 @@ const deleteStudent = async (id: string) => {
         }
 
 
-        const deleteUser = await UserModel.findOneAndUpdate(
+        const deleteUser = await User.findOneAndUpdate(
             { id },
             { isDeleted: true },
             { new: true, session }

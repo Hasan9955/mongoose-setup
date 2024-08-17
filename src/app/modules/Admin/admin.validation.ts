@@ -3,12 +3,11 @@ import { BloodGroup, Gender } from './admin.constant';
 
 const createUserNameValidationSchema = z.object({
   firstName: z.string().min(1).max(20),
-  middleName: z.string().max(20),
-  lastName: z.string().max(20),
+  middleName: z.string().max(20).optional(),
+  lastName: z.string().max(20).optional(),
 });
 
-export const createAdminValidationSchema = z.object({
-  body: z.object({
+export const createAdminValidationSchema = z.object({ 
     password: z.string().max(20),
     admin: z.object({
       designation: z.string(),
@@ -18,13 +17,12 @@ export const createAdminValidationSchema = z.object({
       email: z.string().email(),
       contactNo: z.string(),
       emergencyContactNo: z.string(),
-      bloogGroup: z.enum([...BloodGroup] as [string, ...string[]]),
+      bloodGroup: z.enum([...BloodGroup] as [string, ...string[]]),
       presentAddress: z.string(),
       permanentAddress: z.string(),
       profileImg: z.string(),
     }),
-  }),
-});
+  })
 
 const updateUserNameValidationSchema = z.object({
   firstName: z.string().min(3).max(20).optional(),
@@ -42,7 +40,7 @@ export const updateAdminValidationSchema = z.object({
       email: z.string().email().optional(),
       contactNo: z.string().optional(),
       emergencyContactNo: z.string().optional(),
-      bloogGroup: z.enum([...BloodGroup] as [string, ...string[]]).optional(),
+      bloodGroup: z.enum([...BloodGroup] as [string, ...string[]]).optional(),
       presentAddress: z.string().optional(),
       permanentAddress: z.string().optional(),
       profileImg: z.string().optional(),

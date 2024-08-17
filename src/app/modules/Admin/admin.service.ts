@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from 'http-status';
 import mongoose from 'mongoose';
-import QueryBuilder from '../../builder/QueryBuilder'; 
-import { UserModel } from '../user/user.model'; 
+import QueryBuilder from '../../builder/QueryBuilder';
+import { User } from '../user/user.model';
 import { Admin } from './admin.model';
 import { AdminSearchableFields } from './admin.constant';
 import { TAdmin } from './admin.interface';
@@ -64,7 +64,7 @@ const deleteAdminFromDB = async (id: string) => {
     // get user _id from deletedAdmin
     const userId = deletedAdmin.user;
 
-    const deletedUser = await UserModel.findOneAndUpdate(
+    const deletedUser = await User.findOneAndUpdate(
       userId,
       { isDeleted: true },
       { new: true, session },

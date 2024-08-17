@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from 'http-status';
 import mongoose from 'mongoose';
-import QueryBuilder from '../../builder/QueryBuilder'; 
-import { UserModel } from '../user/user.model';   
+import QueryBuilder from '../../builder/QueryBuilder';
+import { User } from '../user/user.model';
 import { Faculty } from './faculty.model';
 import { FacultySearchableFields } from './faculty.constant';
 import { TFaculty } from './faculty.interface';
@@ -68,7 +68,7 @@ const deleteFacultyFromDB = async (id: string) => {
     // get user _id from deletedFaculty
     const userId = deletedFaculty.user;
 
-    const deletedUser = await UserModel.findByIdAndUpdate(
+    const deletedUser = await User.findByIdAndUpdate(
       userId,
       { isDeleted: true },
       { new: true, session },

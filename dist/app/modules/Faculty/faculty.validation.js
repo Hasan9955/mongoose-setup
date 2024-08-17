@@ -15,21 +15,23 @@ const createUserNameValidationSchema = zod_1.z.object({
     lastName: zod_1.z.string(),
 });
 exports.createFacultyValidationSchema = zod_1.z.object({
-    password: zod_1.z.string().max(20),
-    faculty: zod_1.z.object({
-        designation: zod_1.z.string(),
-        name: createUserNameValidationSchema,
-        gender: zod_1.z.enum([...faculty_constant_1.Gender]),
-        dateOfBirth: zod_1.z.string().optional(),
-        email: zod_1.z.string().email(),
-        contactNo: zod_1.z.string(),
-        emergencyContactNo: zod_1.z.string(),
-        bloodGroup: zod_1.z.enum([...faculty_constant_1.BloodGroup]),
-        presentAddress: zod_1.z.string(),
-        permanentAddress: zod_1.z.string(),
-        academicDepartment: zod_1.z.string(),
-        profileImg: zod_1.z.string(),
-    }),
+    body: zod_1.z.object({
+        password: zod_1.z.string().max(20),
+        faculty: zod_1.z.object({
+            designation: zod_1.z.string(),
+            name: createUserNameValidationSchema,
+            gender: zod_1.z.enum([...faculty_constant_1.Gender]),
+            dateOfBirth: zod_1.z.string().optional(),
+            email: zod_1.z.string().email(),
+            contactNo: zod_1.z.string(),
+            emergencyContactNo: zod_1.z.string(),
+            bloodGroup: zod_1.z.enum([...faculty_constant_1.BloodGroup]),
+            presentAddress: zod_1.z.string(),
+            permanentAddress: zod_1.z.string(),
+            academicDepartment: zod_1.z.string(),
+            profileImg: zod_1.z.string(),
+        }),
+    })
 });
 const updateUserNameValidationSchema = zod_1.z.object({
     firstName: zod_1.z.string().min(1).max(20).optional(),

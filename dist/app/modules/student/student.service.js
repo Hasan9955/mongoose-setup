@@ -123,7 +123,7 @@ const deleteStudent = (id) => __awaiter(void 0, void 0, void 0, function* () {
         if (!deletedStudent) {
             throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'Failed to delete student.');
         }
-        const deleteUser = yield user_model_1.UserModel.findOneAndUpdate({ id }, { isDeleted: true }, { new: true, session });
+        const deleteUser = yield user_model_1.User.findOneAndUpdate({ id }, { isDeleted: true }, { new: true, session });
         if (!deleteUser) {
             throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'Failed to delete user.');
         }

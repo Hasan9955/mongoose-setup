@@ -4,18 +4,22 @@ exports.updateSemesterRegistrationValidationSchema = exports.createSemesterRegis
 const zod_1 = require("zod");
 const semesterRegistration_constant_1 = require("./semesterRegistration.constant");
 exports.createSemesterRegistrationValidationSchema = zod_1.z.object({
-    academicSemester: zod_1.z.string(),
-    status: zod_1.z.enum([...semesterRegistration_constant_1.semesterRegistrationStatus]),
-    startDate: zod_1.z.string().datetime(),
-    endDate: zod_1.z.string().datetime(),
-    minCredit: zod_1.z.number(),
-    maxCredit: zod_1.z.number()
+    body: zod_1.z.object({
+        academicSemester: zod_1.z.string(),
+        status: zod_1.z.enum([...semesterRegistration_constant_1.semesterRegistrationStatus]),
+        startDate: zod_1.z.string().datetime(),
+        endDate: zod_1.z.string().datetime(),
+        minCredit: zod_1.z.number(),
+        maxCredit: zod_1.z.number()
+    })
 });
 exports.updateSemesterRegistrationValidationSchema = zod_1.z.object({
-    academicSemester: zod_1.z.string().optional(),
-    status: zod_1.z.enum([...semesterRegistration_constant_1.semesterRegistrationStatus]).optional(),
-    startDate: zod_1.z.string().datetime().optional(),
-    endDate: zod_1.z.string().datetime().optional(),
-    minCredit: zod_1.z.number().optional(),
-    maxCredit: zod_1.z.number().optional()
+    body: zod_1.z.object({
+        academicSemester: zod_1.z.string().optional(),
+        status: zod_1.z.enum([...semesterRegistration_constant_1.semesterRegistrationStatus]).optional(),
+        startDate: zod_1.z.string().datetime().optional(),
+        endDate: zod_1.z.string().datetime().optional(),
+        minCredit: zod_1.z.number().optional(),
+        maxCredit: zod_1.z.number().optional()
+    })
 });

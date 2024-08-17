@@ -70,7 +70,7 @@ const deleteAdminFromDB = (id) => __awaiter(void 0, void 0, void 0, function* ()
         }
         // get user _id from deletedAdmin
         const userId = deletedAdmin.user;
-        const deletedUser = yield user_model_1.UserModel.findOneAndUpdate(userId, { isDeleted: true }, { new: true, session });
+        const deletedUser = yield user_model_1.User.findOneAndUpdate(userId, { isDeleted: true }, { new: true, session });
         if (!deletedUser) {
             throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'Failed to delete user');
         }

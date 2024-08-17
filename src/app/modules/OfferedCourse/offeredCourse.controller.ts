@@ -2,7 +2,7 @@ import catchAsync from "../../utility/catchAsync"
 import { offeredCourseServices } from "./offeredCourse.service"
 
 const createOfferedCourse = catchAsync(async (req, res) => {
-    const result = await offeredCourseServices.createOfferedCourse(req.body.body)
+    const result = await offeredCourseServices.createOfferedCourse(req.body)
     
     res.status(200).json({
         success: true,
@@ -34,7 +34,7 @@ const getSingleOfferedCourses = catchAsync(async (req, res) => {
 
 const UpdateOfferedCourse = catchAsync(async (req, res) => {
     const {id} = req.params;
-    const data = req.body.body;
+    const data = req.body;
     const result = await offeredCourseServices.UpdateOfferedCourses(id, data)
     
     res.status(200).json({

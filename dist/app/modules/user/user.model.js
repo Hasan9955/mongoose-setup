@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserModel = void 0;
+exports.User = void 0;
 const config_1 = __importDefault(require("../../config"));
 const mongoose_1 = require("mongoose");
 const bcrypt_1 = __importDefault(require("bcrypt"));
@@ -25,11 +25,15 @@ const UserSchema = new mongoose_1.Schema({
     password: {
         type: String,
         required: true,
+        select: 0,
         minLength: [6, 'password should be at last 6 character']
     },
     needsPasswordChange: {
         type: Boolean,
         default: true
+    },
+    passwordChangedAt: {
+        type: Date,
     },
     role: {
         type: String,
@@ -63,4 +67,18 @@ UserSchema.post('save', function (doc, next) {
     doc.password = ''; // we have empty string the password
     next();
 });
-exports.UserModel = (0, mongoose_1.model)('user', UserSchema);
+UserSchema.statics.isUserExists = function (id) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield exports.User.findOne({ id }).select('+password');
+    });
+};
+UserSchema.statics.isPasswordMatch = function (plainTextPassword, hashPassword) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield bcrypt_1.default.compare(plainTextPassword, hashPassword);
+    });
+};
+UserSchema.statics.isJwtIssuedBeforePasswordChanged = function (passwordChangedTimeStamp, jwtIssuedTimeStamp) {
+    const passwordChangedTime = new Date(passwordChangedTimeStamp).getTime() / 1000;
+    return passwordChangedTime > jwtIssuedTimeStamp;
+};
+exports.User = (0, mongoose_1.model)('user', UserSchema);

@@ -45,6 +45,7 @@ const localGuardianValidationZodSchema = z.object({
 
 // Student Schema
 const studentValidationZodSchema = z.object({
+  body: z.object({
   password: z.string().min(6, 'password should be at last 6 character').optional(),
   student: z.object({ 
     name: userNameValidationZodSchema,
@@ -77,6 +78,7 @@ const studentValidationZodSchema = z.object({
     academicDepartment: z.string(),
     isDeleted: z.boolean().default(false)
   })
+})
 })
 // type Student = z.infer<typeof studentValidationZodSchema>
 

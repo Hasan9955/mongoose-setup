@@ -7,16 +7,20 @@ const PreRequisiteCourseValidationSchema = zod_1.z.object({
     isDeleted: zod_1.z.boolean().optional()
 });
 const createCourseValidationSchema = zod_1.z.object({
-    title: zod_1.z.string(),
-    prefix: zod_1.z.string(),
-    code: zod_1.z.number(),
-    credits: zod_1.z.number(),
-    isDeleted: zod_1.z.boolean().optional(),
-    preRequisiteCourses: zod_1.z.array(PreRequisiteCourseValidationSchema).optional()
+    body: zod_1.z.object({
+        title: zod_1.z.string(),
+        prefix: zod_1.z.string(),
+        code: zod_1.z.number(),
+        credits: zod_1.z.number(),
+        isDeleted: zod_1.z.boolean().optional(),
+        preRequisiteCourses: zod_1.z.array(PreRequisiteCourseValidationSchema).optional()
+    })
 });
 const updateCourseValidationSchema = createCourseValidationSchema.partial();
 const CourseFacultyValidationSchema = zod_1.z.object({
-    faculties: zod_1.z.array(zod_1.z.string())
+    body: zod_1.z.object({
+        faculties: zod_1.z.array(zod_1.z.string())
+    })
 });
 exports.CourseValidations = {
     createCourseValidationSchema,

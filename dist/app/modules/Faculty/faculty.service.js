@@ -70,7 +70,7 @@ const deleteFacultyFromDB = (id) => __awaiter(void 0, void 0, void 0, function* 
         }
         // get user _id from deletedFaculty
         const userId = deletedFaculty.user;
-        const deletedUser = yield user_model_1.UserModel.findByIdAndUpdate(userId, { isDeleted: true }, { new: true, session });
+        const deletedUser = yield user_model_1.User.findByIdAndUpdate(userId, { isDeleted: true }, { new: true, session });
         if (!deletedUser) {
             throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'Failed to delete user');
         }

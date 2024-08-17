@@ -14,9 +14,10 @@ const createUserNameValidationSchema = z.object({
 });
 
 export const createFacultyValidationSchema = z.object({
-  password: z.string().max(20),
+  body: z.object({
+    password: z.string().max(20),
     faculty: z.object({
-    designation: z.string(),
+      designation: z.string(),
       name: createUserNameValidationSchema,
       gender: z.enum([...Gender] as [string, ...string[]]),
       dateOfBirth: z.string().optional(),
@@ -29,7 +30,8 @@ export const createFacultyValidationSchema = z.object({
       academicDepartment: z.string(),
       profileImg: z.string(),
     }),
-});
+  })
+})
 
 const updateUserNameValidationSchema = z.object({
   firstName: z.string().min(1).max(20).optional(),

@@ -19,6 +19,7 @@ const AppError_1 = __importDefault(require("../../Errors/AppError"));
 const academicSemester_model_1 = require("../academicSemester/academicSemester.model");
 const semesterRegistration_constant_1 = require("./semesterRegistration.constant");
 const semesterRegistration_model_1 = require("./semesterRegistration.model");
+const offeredCourse_model_1 = require("../OfferedCourse/offeredCourse.model");
 const createSemesterRegistration = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const academicSemester = payload === null || payload === void 0 ? void 0 : payload.academicSemester;
     //check if there any registered semester that is  already upcoming or ongoing;
@@ -83,9 +84,23 @@ const updateSemesterRegistration = (id, payload) => __awaiter(void 0, void 0, vo
     });
     return result;
 });
+const deleteSemesterRegistration = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const isSemesterRegistrationExists = yield semesterRegistration_model_1.SemesterRegistration.findById(id);
+    if (!isSemesterRegistrationExists) {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Requested semester registration is not found.');
+    }
+    // Delete all offered courses under this registered semester
+    const deleteOfferedCoursesUnderThisSemester = yield offeredCourse_model_1.OfferedCourse.deleteMany({
+        semesterRegistration: id
+    });
+    // now delete the registered semester
+    const result = yield semesterRegistration_model_1.SemesterRegistration.findByIdAndDelete(id);
+    return result;
+});
 exports.semesterRegistrationServices = {
     createSemesterRegistration,
     getAllSemesterRegistrations,
     getSingleSemesterRegistration,
-    updateSemesterRegistration
+    updateSemesterRegistration,
+    deleteSemesterRegistration
 };

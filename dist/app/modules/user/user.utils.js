@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateAdminId = exports.findLastAdminId = exports.generateFacultyId = exports.findLastFacultyId = exports.generateStudentId = void 0;
 const user_model_1 = require("./user.model");
 const findLastStudentId = () => __awaiter(void 0, void 0, void 0, function* () {
-    const studentId = yield user_model_1.UserModel.findOne({}, {
+    const studentId = yield user_model_1.User.findOne({}, {
         id: 1,
         _id: 0
     })
@@ -39,7 +39,7 @@ const generateStudentId = (payload) => __awaiter(void 0, void 0, void 0, functio
 exports.generateStudentId = generateStudentId;
 // Faculty ID
 const findLastFacultyId = () => __awaiter(void 0, void 0, void 0, function* () {
-    const lastFaculty = yield user_model_1.UserModel.findOne({
+    const lastFaculty = yield user_model_1.User.findOne({
         role: 'faculty',
     }, {
         id: 1,
@@ -65,7 +65,7 @@ const generateFacultyId = () => __awaiter(void 0, void 0, void 0, function* () {
 exports.generateFacultyId = generateFacultyId;
 // Admin ID
 const findLastAdminId = () => __awaiter(void 0, void 0, void 0, function* () {
-    const lastAdmin = yield user_model_1.UserModel.findOne({
+    const lastAdmin = yield user_model_1.User.findOne({
         role: 'admin',
     }, {
         id: 1,

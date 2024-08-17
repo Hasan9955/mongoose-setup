@@ -38,7 +38,7 @@ const createStudentIntoDB = (password, studentData) => __awaiter(void 0, void 0,
         const academicSemester = yield academicSemester_model_1.AcademicSemesterModel.findById(studentData.academicSemester);
         userData.id = yield (0, user_utils_1.generateStudentId)(academicSemester);
         //create user in DB (Transaction-1)
-        const newUser = yield user_model_1.UserModel.create([userData], { session });
+        const newUser = yield user_model_1.User.create([userData], { session });
         if (!newUser.length) {
             throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'Failed to create user.');
         }
@@ -88,7 +88,7 @@ const createFacultyIntoDB = (password, payload) => __awaiter(void 0, void 0, voi
         //set  generated id
         userData.id = yield (0, user_utils_1.generateFacultyId)();
         // create a user (transaction-1)
-        const newUser = yield user_model_1.UserModel.create([userData], { session }); // array
+        const newUser = yield user_model_1.User.create([userData], { session }); // array
         //create a faculty
         if (!newUser.length) {
             throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'Failed to create user');
@@ -112,6 +112,7 @@ const createFacultyIntoDB = (password, payload) => __awaiter(void 0, void 0, voi
     }
 });
 const createAdminIntoDB = (password, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b;
     // create a user object
     const userData = {};
     //if password is not given , use deafult password
@@ -124,14 +125,14 @@ const createAdminIntoDB = (password, payload) => __awaiter(void 0, void 0, void 
         //set  generated id
         userData.id = yield (0, user_utils_1.generateAdminId)();
         // create a user (transaction-1)
-        const newUser = yield user_model_1.UserModel.create([userData], { session });
+        const newUser = yield user_model_1.User.create([userData], { session });
         //create a admin
         if (!newUser.length) {
             throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'Failed to create admin');
         }
-        // set id , _id as user
-        payload.id = newUser[0].id;
-        payload.user = newUser[0]._id; //reference _id
+        // set id , _id as user 
+        payload.id = (_a = newUser[0]) === null || _a === void 0 ? void 0 : _a.id;
+        payload.user = (_b = newUser[0]) === null || _b === void 0 ? void 0 : _b._id; //reference _id 
         // create a admin (transaction-2)
         const newAdmin = yield admin_model_1.Admin.create([payload], { session });
         if (!newAdmin.length) {

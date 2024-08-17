@@ -8,18 +8,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const catchAsync_1 = __importDefault(require("../utility/catchAsync"));
 const validationRequest = (schema) => {
-    return (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-        try {
-            const bodyData = req.body;
-            //validate
-            yield schema.parseAsync(bodyData);
-            next();
-        }
-        catch (error) {
-            next(error);
-        }
-    });
+    return (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+        const bodyData = req.body;
+        const cookies = req.cookies;
+        //validate
+        // await schema.parseAsync(bodyData)
+        // If you want to get the data as an Object like body, cookie
+        yield schema.parseAsync({
+            body: req.body,
+            cookie: req.cookies
+        });
+        next();
+    }));
 };
 exports.default = validationRequest;

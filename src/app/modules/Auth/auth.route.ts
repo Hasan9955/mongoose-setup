@@ -1,6 +1,6 @@
 import { Router } from "express";
 import validationRequest from "../../Middlewares/validator";
-import { changePasswordValidationSchema, loginValidationSchema } from "./auth.validation";
+import { changePasswordValidationSchema, loginValidationSchema, refreshTokenValidationSchema } from "./auth.validation";
 import { authControllers } from "./auth.controller";
 import authValidator from "../../Middlewares/authValidator";
 import { USER_ROLE } from "../user/user.constant";
@@ -13,6 +13,12 @@ router.post(
     '/login',
     validationRequest(loginValidationSchema),
     authControllers.loginUser
+)
+
+router.post(
+    '/refresh-token',
+    validationRequest(refreshTokenValidationSchema),
+    authControllers.refreshToken
 )
 
 router.post(

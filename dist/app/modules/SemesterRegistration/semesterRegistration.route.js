@@ -13,4 +13,5 @@ router.get('/', semesterRegistration_controller_1.semesterRegistrationController
 router.get('/:id', semesterRegistration_controller_1.semesterRegistrationControllers.getSingleSemesterRegistration);
 router.post('/create-semester-registration', (0, validator_1.default)(semesterRegistration_validation_1.createSemesterRegistrationValidationSchema), semesterRegistration_controller_1.semesterRegistrationControllers.createSemesterRegistration);
 router.patch('/:id', (0, validator_1.default)(semesterRegistration_validation_1.updateSemesterRegistrationValidationSchema), semesterRegistration_controller_1.semesterRegistrationControllers.updateSemesterRegistration);
+router.delete('/:id', semesterRegistration_controller_1.semesterRegistrationControllers.deleteSemesterRegistration);
 exports.semesterRegistrationRoutes = router;

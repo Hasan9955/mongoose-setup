@@ -13,11 +13,17 @@ const app = (0, express_1.default)();
 //parsers
 app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)());
-app.use((0, cors_1.default)({ origin: ['http://localhost:8000'] }));
+app.use((0, cors_1.default)({ origin: [
+        'http://localhost:3000',
+        'ph-university-server-weld.vercel.app'
+    ] }));
 //application routes
 app.use('/api/v1', Routes_1.default);
 app.get('/', (req, res) => {
-    // res.send('Server is going on...');
+    res.status(200).json({
+        success: true,
+        message: 'PH University server is running successfully!'
+    });
 });
 app.use(globalErrorHandler_1.default);
 app.use(notFound_1.default);

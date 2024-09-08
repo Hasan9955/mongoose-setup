@@ -15,13 +15,19 @@ const app = express();
 //parsers
 app.use(express.json());
 app.use(cookieParser())
-app.use(cors({ origin: ['http://localhost:8000'] }));
+app.use(cors({ origin: [
+  'http://localhost:3000',
+  'ph-university-server-weld.vercel.app'
+ ] }));
 
 //application routes
 app.use('/api/v1', router)
 
 app.get('/', (req: Request, res: Response) => {
-  // res.send('Server is going on...');
+  res.status(200).json({
+    success: true,
+    message: 'PH University server is running successfully!'
+  })
 });
 
 app.use(globalErrorHandler)

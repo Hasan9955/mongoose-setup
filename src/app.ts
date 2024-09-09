@@ -15,10 +15,10 @@ const app = express();
 //parsers
 app.use(express.json());
 app.use(cookieParser())
-app.use(cors({ origin: [
-  'http://localhost:3000',
-  'ph-university-server-weld.vercel.app'
- ] }));
+app.use(cors({ 
+  origin: [ 'http://localhost:3000' ],
+  credentials: true
+ }));
 
 //application routes
 app.use('/api/v1', router)

@@ -29,7 +29,7 @@ const refreshToken = catchAsync(async (req, res) => {
     const result = await authServices.refreshToken(refreshToken)
     res.status(200).json({
         success: true,
-        message: 'User logged Successfully.',
+        message: 'Token retrieved Successfully.',
         data: result
     })
 })

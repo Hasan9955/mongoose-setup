@@ -34,7 +34,14 @@ const authValidator = (...requiredRoles) => {
         //     }
         // })
         //Step 2: check if the token is valid 
-        const decoded = jsonwebtoken_1.default.verify(token, config_1.default.jwt_access_secret);
+        // Here we use try-catch function for catch the error when jwt can't decode the token. Such as when the token time will expire!
+        let decoded;
+        try {
+            decoded = jsonwebtoken_1.default.verify(token, config_1.default.jwt_access_secret);
+        }
+        catch (error) {
+            throw new AppError_1.default(http_status_1.default.UNAUTHORIZED, 'You are not authorized!');
+        }
         req.user = decoded;
         const { userId, role, iat } = decoded;
         // check if the user exists 

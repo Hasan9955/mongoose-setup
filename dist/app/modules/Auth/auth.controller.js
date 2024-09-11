@@ -37,7 +37,7 @@ const refreshToken = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, v
     const result = yield auth_service_1.authServices.refreshToken(refreshToken);
     res.status(200).json({
         success: true,
-        message: 'User logged Successfully.',
+        message: 'Token retrieved Successfully.',
         data: result
     });
 }));
